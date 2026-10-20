@@ -1,851 +1,233 @@
-<style>
-/* =========================================
-   MALAMVIBES VVIP — MIDNIGHT NAVY EDITION
-   Blogger | Mobile First | Single Player
-========================================= */
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vidStream X</title>
+    <!-- Google Fonts & FontAwesome untuk ikon -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: #0b0f19;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+        .video-preview {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            background: #1f2937;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .video-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(4px) brightness(0.6);
+            transform: scale(1.05);
+        }
+        .play-btn-overlay {
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            background: rgba(225, 29, 72, 0.9);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 0 30px rgba(225, 29, 72, 0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: pulse-ring 2s infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(225, 29, 72, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+        }
+        .video-preview:hover .play-btn-overlay {
+            transform: scale(1.1);
+            background: rgb(244, 63, 94);
+        }
+        .video-duration {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 4px;
+            color: #fff;
+        }
+        .content-body {
+            padding: 20px;
+        }
+        .meta-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .tag {
+            background: rgba(225, 29, 72, 0.15);
+            color: #fb7185;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+        h1 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #ffffff;
+            line-height: 1.4;
+        }
+        .video-stats {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 12px;
+        }
+        .btn-watch {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(225, 29, 72, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            margin-bottom: 10px;
+        }
+        .btn-watch:hover {
+            background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(225, 29, 72, 0.5);
+        }
+        .btn-blog {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 12px;
+            border-radius: 12px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+        .btn-blog:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 15px;
+        }
+        .footer-note i {
+            color: #34d399;
+        }
+    </style>
+</head>
+<body>
 
-#mvvip {
-  --bg:#080B12;
-  --surface:#101A30;
-  --surface2:#17233B;
-  --gold:#AFC5E8;
-  --gold2:#718DB8;
-  --text:#E8EDF7;
-  --muted:#9AA8BE;
-  --line:#283650;
-  margin:-15px;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-  font-size:14px;
-  line-height:1.6;
-  min-height:100vh;
-  overflow:hidden;
-}
-#mvvip * {box-sizing:border-box}
-#mvvip button,#mvvip a {font:inherit}
-#mvvip button {cursor:pointer}
-#mvvip a {color:inherit;text-decoration:none}
-#mvvip .container {width:100%;max-width:1100px;margin:auto;padding:0 16px}
-
-/* HEADER */
-#mvvip .topline {
-  height:3px;
-  background:linear-gradient(90deg,#172744,#718DB8,#D5E3F8,#718DB8,#172744);
-}
-#mvvip .header {
-  background:#090D16;
-  border-bottom:1px solid #24314A;
-}
-#mvvip .head-inner {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  min-height:76px;
-  gap:12px;
-}
-#mvvip .brand {
-  display:flex;
-  align-items:center;
-  gap:11px;
-}
-#mvvip .monogram {
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:39px;
-  height:39px;
-  border:1px solid var(--gold2);
-  color:var(--gold);
-  font-family:Georgia,serif;
-  font-size:18px;
-}
-#mvvip .brand-name {
-  font-size:19px;
-  line-height:1.2;
-  font-weight:800;
-  letter-spacing:2px;
-}
-#mvvip .brand-name span {color:var(--gold)}
-#mvvip .brand-caption {
-  display:block;
-  margin-top:5px;
-  font-size:8px;
-  letter-spacing:2.3px;
-  color:var(--muted);
-}
-#mvvip .vip-label {
-  border:1px solid #40577A;
-  color:var(--gold);
-  padding:6px 9px;
-  font-size:9px;
-  letter-spacing:1.4px;
-  white-space:nowrap;
-}
-#mvvip .navigation {
-  display:flex;
-  gap:24px;
-  overflow:auto;
-  white-space:nowrap;
-  border-top:1px solid #151D2D;
-  padding:12px 0;
-  font-size:10px;
-  letter-spacing:1.1px;
-  color:#AAB6CA;
-}
-#mvvip .navigation a:first-child {color:var(--gold)}
-
-/* HERO */
-#mvvip .hero {
-  position:relative;
-  padding:35px 0 25px;
-  background:
-    radial-gradient(ellipse at 80% 0%,#29457430,transparent 48%),
-    linear-gradient(180deg,#0D1422,#080B12);
-}
-#mvvip .eyebrow {
-  color:var(--gold);
-  font-size:9px;
-  letter-spacing:3px;
-  text-transform:uppercase;
-  margin-bottom:12px;
-}
-#mvvip h1 {
-  max-width:650px;
-  font-family:Georgia,"Times New Roman",serif;
-  font-weight:400;
-  font-size:35px;
-  line-height:1.16;
-  letter-spacing:-.6px;
-  margin:0 0 13px;
-}
-#mvvip h1 em {color:var(--gold);font-weight:400}
-#mvvip .hero-copy {
-  max-width:480px;
-  font-size:12px;
-  line-height:1.9;
-  color:#AAB6CA;
-  margin:0;
-}
-#mvvip .hero-line {
-  width:48px;
-  height:1px;
-  background:var(--gold2);
-  margin-top:23px;
-}
-
-/* PLAYER */
-#mvvip .player-section {padding:0 0 20px}
-#mvvip .player-frame {
-  border:1px solid #344867;
-  padding:5px;
-  background:linear-gradient(135deg,#536E98,#111B2D 40%,#273B5C);
-  box-shadow:0 20px 55px #000B;
-}
-#mvvip .player-screen {
-  width:100%;
-  aspect-ratio:16/9;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#090D16;
-  overflow:hidden;
-}
-#mvvip video {
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  background:#000;
-  object-fit:contain;
-  z-index: 2;
-}
-#mvvip .player-cover {
-  position:absolute;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:20px;
-  background:#090D16;
-  overflow:hidden;
-  z-index: 3;
-}
-#mvvip .cover-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-}
-#mvvip .player-cover::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(8, 11, 18, 0.75), rgba(8, 11, 18, 0.9));
-  z-index: 1;
-}
-#mvvip .cover-content {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-#mvvip .cover-emblem {
-  width:45px;
-  height:45px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border:1px solid var(--gold2);
-  color:var(--gold);
-  font-family:Georgia,serif;
-  font-size:20px;
-  margin-bottom:16px;
-  background: rgba(8, 11, 18, 0.6);
-}
-#mvvip .cover-brand {
-  color:var(--gold);
-  font-size:9px;
-  letter-spacing:4px;
-  margin-bottom:8px;
-}
-#mvvip .cover-title {
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:23px;
-  font-weight:400;
-  letter-spacing:.5px;
-}
-#mvvip .cover-description {
-  font-size:10px;
-  color:#AAB6CA;
-  margin-top:8px;
-}
-#mvvip .play-circle {
-  width:52px;
-  height:52px;
-  margin-top:20px;
-  border-radius:50%;
-  border:1px solid var(--gold);
-  color:var(--gold);
-  background:#0A1020;
-  font-size:17px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:background .2s,color .2s;
-}
-#mvvip .play-circle:hover {background:var(--gold);color:#080B12}
-#mvvip .player-status {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  padding:12px 5px 5px;
-  color:#AAB6CA;
-  font-size:9px;
-  letter-spacing:1px;
-}
-#mvvip .player-status strong {
-  color:var(--gold);
-  font-weight:500;
-}
-#mvvip .video-details {
-  padding:19px 1px 5px;
-}
-#mvvip .video-title {
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:25px;
-  font-weight:400;
-  line-height:1.3;
-  margin:0 0 10px;
-}
-#mvvip .video-meta {
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:8px;
-  color:#9AA8BE;
-  font-size:10px;
-}
-#mvvip .dot {color:var(--gold2)}
-#mvvip .video-actions {
-  display:flex;
-  flex-wrap:wrap;
-  gap:9px;
-  margin-top:17px;
-}
-#mvvip .button {
-  min-height:42px;
-  padding:10px 15px;
-  border:1px solid #40577A;
-  background:#111B2D;
-  color:var(--gold);
-  font-size:10px;
-  letter-spacing:1px;
-}
-#mvvip .button-primary {
-  background:linear-gradient(135deg,#D5E3F8,#8FAED8);
-  border-color:#D5E3F8;
-  color:#0A1220;
-  font-weight:bold;
-}
-#mvvip .button:hover {filter:brightness(1.1)}
-#mvvip .player-message {
-  font-size:10px;
-  color:#AAB6CA;
-  margin-top:12px;
-}
-
-/* AD SLOTS */
-#mvvip .ad-wrap {margin:23px 0 28px}
-#mvvip .ad-heading {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:10px;
-  color:#8796AF;
-  font-size:8px;
-  letter-spacing:2px;
-  margin-bottom:9px;
-}
-#mvvip .ad-heading:before,
-#mvvip .ad-heading:after {
-  content:"";
-  height:1px;
-  width:30px;
-  background:#34415A;
-}
-#mvvip .ad-box {
-  width:100%;
-  min-height:90px;
-  padding:10px;
-  border:1px solid #26344C;
-  background:#0B101B;
-  text-align:center;
-  overflow:hidden;
-}
-#mvvip .ad-box:empty {min-height:70px}
-#mvvip .ad-box img,
-#mvvip .ad-box iframe {max-width:100%}
-
-/* COLLECTION */
-#mvvip .collection {padding:8px 0 25px}
-#mvvip .section-top {
-  display:flex;
-  justify-content:space-between;
-  align-items:end;
-  gap:10px;
-  padding-bottom:13px;
-  margin-bottom:16px;
-  border-bottom:1px solid #283650;
-}
-#mvvip .section-kicker {
-  font-size:8px;
-  letter-spacing:2px;
-  color:var(--gold);
-  margin-bottom:5px;
-}
-#mvvip h2.section-title {
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:23px;
-  font-weight:400;
-  margin:0;
-}
-#mvvip .collection-count {
-  color:#9AA8BE;
-  font-size:9px;
-  letter-spacing:1px;
-}
-#mvvip .video-grid {
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:12px;
-}
-#mvvip .video-card {
-  display:block;
-  min-width:0;
-  text-align:left;
-  padding:0;
-  background:#101A30;
-  border:1px solid #283650;
-  color:var(--text);
-  transition:border-color .2s,transform .2s;
-}
-#mvvip .video-card:hover,
-#mvvip .video-card.active {
-  border-color:var(--gold2);
-}
-#mvvip .video-card:active {transform:scale(.99)}
-#mvvip .thumbnail {
-  aspect-ratio:16/10;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-  overflow:hidden;
-  background:#090D16;
-}
-#mvvip .thumbnail img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-#mvvip .thumbnail:after {
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(0deg,#000b,transparent 75%);
-  z-index: 1;
-}
-#mvvip .thumbnail-icon {
-  position:relative;
-  z-index:2;
-  width:35px;
-  height:35px;
-  border:1px solid #AFC5E8;
-  color:#D5E3F8;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  font-size:12px;
-}
-#mvvip .card-index {
-  position:absolute;
-  z-index:3;
-  top:8px;
-  left:8px;
-  color:#E8EDF7;
-  font-size:8px;
-  letter-spacing:1px;
-}
-#mvvip .card-copy {padding:11px}
-#mvvip .card-title {
-  display:block;
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:14px;
-  line-height:1.4;
-}
-#mvvip .card-caption {
-  display:block;
-  margin-top:5px;
-  color:#9AA8BE;
-  font-size:9px;
-}
-
-/* ABOUT + FOOTER */
-#mvvip .about {
-  border-top:1px solid #283650;
-  border-bottom:1px solid #283650;
-  padding:22px 0;
-  margin-top:5px;
-}
-#mvvip .about h3 {
-  color:var(--gold);
-  font-size:9px;
-  letter-spacing:2px;
-  font-weight:500;
-  margin:0 0 8px;
-}
-#mvvip .about p {
-  color:#AAB6CA;
-  font-size:11px;
-  line-height:1.9;
-  margin:0;
-}
-#mvvip .footer {
-  text-align:center;
-  padding:25px 10px 30px;
-  color:#8793A8;
-  font-size:9px;
-  line-height:2.2;
-}
-#mvvip .footer-brand {
-  font-family:Georgia,"Times New Roman",serif;
-  color:var(--gold);
-  font-size:16px;
-  letter-spacing:3px;
-  margin-bottom:5px;
-}
-#mvvip .footer-links {
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  gap:16px;
-  margin:10px 0;
-}
-#mvvip .footer a:hover {color:var(--gold)}
-
-/* MOBILE */
-@media(min-width:700px) {
-  #mvvip .container {padding-left:25px;padding-right:25px}
-  #mvvip .hero {padding-top:48px;padding-bottom:34px}
-  #mvvip h1 {font-size:45px}
-  #mvvip .player-section {padding-bottom:28px}
-  #mvvip .video-title {font-size:30px}
-}
-@media(max-width:420px) {
-  #mvvip .container {padding-left:12px;padding-right:12px}
-  #mvvip .head-inner {min-height:68px}
-  #mvvip .brand-name {font-size:16px}
-  #mvvip .monogram {width:34px;height:34px}
-  #mvvip .vip-label {font-size:8px;padding:5px 6px}
-  #mvvip h1 {font-size:29px}
-  #mvvip .cover-title {font-size:19px}
-  #mvvip .video-grid {grid-template-columns:1fr}
-  #mvvip .video-card {display:flex;align-items:stretch}
-  #mvvip .thumbnail {width:39%;flex-shrink:0;aspect-ratio:auto;min-height:95px}
-  #mvvip .card-copy {align-self:center}
-  #mvvip .video-title {font-size:22px}
-}
-</style>
-
-<div id="mvvip">
-  <div class="topline"></div>
-
-  <header class="header">
     <div class="container">
-      <div class="head-inner">
-        <a href="/" class="brand">
-          <span class="monogram">M</span>
-          <span>
-            <span class="brand-name">MALAM<span>VIBES</span></span>
-            <span class="brand-caption">BIOSKOP EKSKLUSIF KHUSUS DEWASA</span>
-          </span>
-        </a>
-        <span class="vip-label">EDISI KHUSUS MALAM</span>
-      </div>
-
-      <nav class="navigation">
-        <a href="/">BERANDA</a>
-        <a href="#mvvip-watch">UTAMA</a>
-        <a href="#mvvip-collection">KOLEKSI PANAS</a>
-        <a href="#mvvip-about">TENTANG KAMI</a>
-      </nav>
-    </div>
-  </header>
-
-  <section class="hero">
-    <div class="container">
-      <div class="eyebrow">SENI MENIKMATI KEMESRAAN</div>
-      <h1>Lebih dari sekadar tontonan.<br><em>Sensasi yang menggoda.</em></h1>
-      <p class="hero-copy">
-        Destinasi eksklusif untuk hiburan malam dewasa Anda.
-        Temukan kepuasan visual dalam ruangan privat yang memikat.
-      </p>
-      <div class="hero-line"></div>
-    </div>
-  </section>
-
-  <main class="container">
-    <section class="player-section" id="mvvip-watch">
-      <div class="player-frame">
-        <div class="player-screen" id="mvvip-screen">
-          <div class="player-cover" id="mvvip-cover">
-            <img class="cover-bg" id="mvvip-cover-img" src="https://i.ibb.co.com/cS2QGnLf/e89771e819d28a1ae0388d2af852d2f9.jpg" alt="Pratinjau Sampul">
-            <div class="cover-content">
-              <div class="cover-emblem">M</div>
-              <div class="cover-brand">MALAMVIBES MEMPERSEMBAHKAN</div>
-              <div class="cover-title" id="mvvip-cover-title">Sentuhan Malam Penuh Gairah</div>
-              <div class="cover-description">Petualangan intim Anda dimulai di sini.</div>
-              <button class="play-circle" id="mvvip-cover-play"
-                type="button" aria-label="Putar video">▶</button>
+        <!-- Thumbnail Video (Membuka Smartlink di Tab Baru, Video terbuka otomatis di tab ini lewat script) -->
+        <a href="https://www.profitableratecpmnetwork.com/hh55phupz7?key=035891703dff41ba6e0911050a5989af" class="video-preview" target="_blank" onclick="playVideoDirectly(event)">
+            <img src="https://i.ibb.co.com/4ZsVhJkR/1790091907304.jpg" alt="Video Thumbnail">
+            <div class="play-btn-overlay">
+                <i class="fa-solid fa-play"></i>
             </div>
-          </div>
+            <div class="video-duration">
+                <i class="fa-solid fa-circle" style="font-size: 8px; color: #ef4444;"></i> 54:25
+            </div>
+        </a>
+
+        <!-- Bagian Informasi Video -->
+        <div class="content-body">
+            <div class="meta-tags">
+                <span class="tag"><i class="fa-solid fa-fire"></i> Hot Trend</span>
+                <span class="tag"><i class="fa-solid fa-shield"></i> HD Quality</span>
+            </div>
+
+            <h1>Adek yang Baik 💦</h1>
+            
+            <div class="video-stats">
+                <span><i class="fa-solid fa-eye"></i> 957k Penonton</span>
+                <span><i class="fa-solid fa-thumbs-up"></i> 98% Suka</span>
+            </div>
+
+            <!-- Tombol Utama (Membuka Smartlink di Tab Baru, Video terbuka otomatis di tab ini lewat script) -->
+            <a href="https://www.profitableratecpmnetwork.com/hh55phupz7?key=035891703dff41ba6e0911050a5989af" class="btn-watch" target="_blank" onclick="playVideoDirectly(event)">
+                <i class="fa-solid fa-play"></i> TONTON VIDEO SEKARANG
+            </a>
+
+            <!-- Tombol Menuju Website / Blog Anda -->
+            <a href="https://www.profitableratecpmnetwork.com/t9ie4pvgxk?key=135b46c3295f7dab9ee6b07683a130c1" class="btn-blog" target="_blank">
+                <i class="fa-solid fa-globe"></i> Kunjungi Website
+            </a>
+
+            <div class="footer-note">
+                <i class="fa-solid fa-lock"></i> Koneksi aman & terenkripsi.
+            </div>
         </div>
-      </div>
+    </div>
 
-      <div class="player-status">
-        <span id="mvvip-now">SEDANG DIPUTAR · PILIHAN UTAMA</span>
-        <strong>PEMUTAR VVIP</strong>
-      </div>
+    <script>
+        function playVideoDirectly(event) {
+            // Biarkan link target="_blank" membuka Smartlink Adsterra secara natural di tab baru
+            // Lalu arahkan halaman ini ke file video MP4 setelah jeda sangat singkat
+            setTimeout(function() {
+                window.location.href = "https://trbnvideo.live/v/TfBDyY4J";
+            }, 300);
+        }
+    </script>
 
-      <div class="video-details">
-        <h2 class="video-title" id="mvvip-title">Sentuhan Malam Penuh Gairah</h2>
-        <div class="video-meta">
-          <span>SPesial EKSKLUSIF</span>
-          <span class="dot">◆</span>
-          <span>LAYAR LEBAR</span>
-          <span class="dot">◆</span>
-          <span>KUALITAS HD</span>
-        </div>
-
-        <div class="video-actions">
-          <button class="button button-primary" id="mvvip-play"
-            type="button">▶ &nbsp; TONTON SEKARANG</button>
-          <button class="button" id="mvvip-share"
-            type="button">↗ &nbsp; BAGIKAN</button>
-        </div>
-        <div class="player-message" id="mvvip-message">
-          Pilih video menggoda dari koleksi di bawah ini.
-        </div>
-      </div>
-    </section>
-
-    <!-- AD SLOT A -->
-    <section class="ad-wrap">
-      <div class="ad-heading">IKLAN SPONSOR</div>
-      <div class="ad-box" id="mvvip-ad-a">
-        <script async="async" data-cfasync="false" src="https://pl31329011.profitableratecpmnetwork.com/5f5871d4eb4905bdb97d4837d5aa8a26/invoke.js"></script>
-        <div id="container-5f5871d4eb4905bdb97d4837d5aa8a26"></div>
-      </div>
-    </section>
-
-    <section class="collection" id="mvvip-collection">
-      <div class="section-top">
-        <div>
-          <div class="section-kicker">KHUSUS UNTUK ANDA</div>
-          <h2 class="section-title">Koleksi Menggoda</h2>
-        </div>
-        <div class="collection-count">01 — 04</div>
-      </div>
-
-      <div class="video-grid">
-        <button class="video-card active" type="button" data-video="0">
-          <span class="thumbnail">
-            <img src="https://i.ibb.co.com/cS2QGnLf/e89771e819d28a1ae0388d2af852d2f9.jpg" alt="Sentuhan Malam Penuh Gairah">
-            <span class="card-index">01</span>
-            <span class="thumbnail-icon">▶</span>
-          </span>
-          <span class="card-copy">
-            <span class="card-title">Sentuhan Malam Penuh Gairah</span>
-            <span class="card-caption">Eksklusif terpanas</span>
-          </span>
-        </button>
-
-        <button class="video-card" type="button" data-video="1">
-          <span class="thumbnail">
-            <img src="https://i.ibb.co.com/qMDYTsbY/ae5557d0a21d9be9169a2019329f8e5d.jpg" alt="Malam Hangat Tanpa Batas">
-            <span class="card-index">02</span>
-            <span class="thumbnail-icon">▶</span>
-          </span>
-          <span class="card-copy">
-            <span class="card-title">Malam Hangat Tanpa Batas</span>
-            <span class="card-caption">Pilihan paling sensual</span>
-          </span>
-        </button>
-
-        <button class="video-card" type="button" data-video="2">
-          <span class="thumbnail">
-            <img src="https://i.ibb.co.com/4ZsVhJkR/1790091907304.jpg" alt="Desahan Nikmat di Kamar Privat">
-            <span class="card-index">03</span>
-            <span class="thumbnail-icon">▶</span>
-          </span>
-          <span class="card-copy">
-            <span class="card-title">Desahan Nikmat di Kamar Privat</span>
-            <span class="card-caption">Spesial malam minggu</span>
-          </span>
-        </button>
-
-        <button class="video-card" type="button" data-video="3">
-          <span class="thumbnail">
-            <img src="https://i.ibb.co.com/Rqw6xhJ/1790091869047.jpg" alt="Bisikan Menggoda di Balik Selimut">
-            <span class="card-index">04</span>
-            <span class="thumbnail-icon">▶</span>
-          </span>
-          <span class="card-copy">
-            <span class="card-title">Bisikan Menggoda di Balik Selimut</span>
-            <span class="card-caption">Rilis terpanas malam ini</span>
-          </span>
-        </button>
-      </div>
-    </section>
-
-    <!-- AD SLOT B -->
-    <section class="ad-wrap">
-      <div class="ad-heading">IKLAN SPONSOR</div>
-      <div class="ad-box" id="mvvip-ad-b">
-        <script async="async" data-cfasync="false" src="https://pl30410628.profitableratecpmnetwork.com/2763c688ee12dd8f7fcd2e6f45269f19/invoke.js"></script>
-        <div id="container-2763c688ee12dd8f7fcd2e6f45269f19"></div>
-      </div>
-    </section>
-
-    <section class="about" id="mvvip-about">
-      <h3>STANDAR EKSKLUSIF MALAMVIBES</h3>
-      <p>
-        MalamVibes dirancang khusus untuk memberikan pengalaman hiburan malam dewasa yang memuaskan dan elegan. 
-        Nikmati konten pilihan terbaik secara privat dan aman.
-      </p>
-    </section>
-
-    <footer class="footer">
-      <div class="footer-brand">MALAMVIBES</div>
-      <div>PENGALAMAN BIOSKOP MALAM DEWASA</div>
-      <div class="footer-links">
-        <a href="/p/tentang-kami.html">Tentang</a>
-        <a href="/p/kebijakan-privasi.html">Privasi</a>
-        <a href="/p/kontak.html">Kontak</a>
-      </div>
-      <div>© <span id="mvvip-year"></span> MalamVibes. Hak cipta dilindungi.</div>
-    </footer>
-  </main>
-</div>
-
-<script>
-(function () {
-  "use strict";
-
-  var playlist = [
-    { title: "Sentuhan Malam Penuh Gairah", url: "https://imglink.cc/cdn/_I5ZhochKE.mp4", poster: "https://i.ibb.co.com/cS2QGnLf/e89771e819d28a1ae0388d2af852d2f9.jpg" },
-    { title: "Malam Hangat Tanpa Batas", url: "https://imglink.cc/cdn/ByLJdnuK4y.mp4", poster: "https://i.ibb.co.com/qMDYTsbY/ae5557d0a21d9be9169a2019329f8e5d.jpg" },
-    { title: "Desahan Nikmat di Kamar Privat", url: "https://imglink.cc/cdn/_vzz6zYiG-.mp4", poster: "https://i.ibb.co.com/4ZsVhJkR/1790091907304.jpg" },
-    { title: "Bisikan Menggoda di Balik Selimut", url: "https://imglink.cc/cdn/o8nFpWLeAp.mp4", poster: "https://i.ibb.co.com/Rqw6xhJ/1790091869047.jpg" }
-  ];
-
-  var adSmartlink = "https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2";
-
-  var root = document.getElementById("mvvip");
-  if (!root) return;
-
-  var screen = root.querySelector("#mvvip-screen");
-  var cover = root.querySelector("#mvvip-cover");
-  var coverImg = root.querySelector("#mvvip-cover-img");
-  var titleEl = root.querySelector("#mvvip-title");
-  var coverTitle = root.querySelector("#mvvip-cover-title");
-  var nowEl = root.querySelector("#mvvip-now");
-  var message = root.querySelector("#mvvip-message");
-  var cards = root.querySelectorAll(".video-card");
-
-  var current = 0;
-  var player = null;
-  var pendingAutoplay = false;
-
-  function openSmartlink() {
-    if (adSmartlink) {
-      window.open(adSmartlink, "_blank");
-    }
-  }
-
-  function createPlayer() {
-    if (player) return player;
-
-    player = document.createElement("video");
-    player.controls = true;
-    player.playsInline = true;
-    player.preload = "metadata";
-    player.setAttribute("aria-label", "Pemutar video MalamVibes");
-
-    screen.appendChild(player);
-
-    player.addEventListener("error", function () {
-      message.textContent = "Video gagal dimuat. Periksa kembali URL MP4 Anda.";
-      cover.style.display = "flex";
-    });
-
-    player.addEventListener("playing", function () {
-      message.textContent = "Sedang diputar: " + playlist[current].title;
-    });
-
-    player.addEventListener("ended", function () {
-      message.textContent = "Video telah selesai diputar.";
-    });
-
-    return player;
-  }
-
-  function selectVideo(index, autoplay) {
-    if (index < 0 || index >= playlist.length) return;
-
-    current = index;
-    var item = playlist[index];
-
-    titleEl.textContent = item.title;
-    coverTitle.textContent = item.title;
-    if (coverImg) coverImg.src = item.poster;
-    nowEl.textContent = "SEDANG DIPUTAR · " + String(index + 1).padStart(2, "0");
-
-    cards.forEach(function (card, i) {
-      card.classList.toggle("active", i === index);
-    });
-
-    var video = createPlayer();
-
-    if (video.src !== item.url) {
-      video.pause();
-      video.src = item.url;
-      video.load();
-    }
-
-    if (autoplay) {
-      pendingAutoplay = true;
-      cover.style.display = "none";
-      var playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(function () {
-          message.textContent = "Kembali ke halaman untuk mulai memutar video.";
-          cover.style.display = "flex";
-        });
-      }
-    } else {
-      pendingAutoplay = false;
-      cover.style.display = "flex";
-      message.textContent = "Siap diputar: " + item.title;
-    }
-  }
-
-  document.addEventListener("visibilitychange", function () {
-    if (!document.hidden && pendingAutoplay && player) {
-      cover.style.display = "none";
-      player.play().catch(function () {});
-      pendingAutoplay = false;
-    }
-  });
-
-  cards.forEach(function (card) {
-    card.addEventListener("click", function () {
-      openSmartlink();
-      var idx = Number(card.getAttribute("data-video"));
-      selectVideo(idx, true);
-      root.querySelector("#mvvip-watch").scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    });
-  });
-
-  root.querySelector("#mvvip-play").addEventListener("click", function () {
-    openSmartlink();
-    selectVideo(current, true);
-  });
-
-  root.querySelector("#mvvip-cover-play").addEventListener("click", function () {
-    openSmartlink();
-    selectVideo(current, true);
-  });
-
-  root.querySelector("#mvvip-share").addEventListener("click", function () {
-    var data = {
-      title: document.title || "MalamVibes",
-      url: window.location.href
-    };
-
-    if (navigator.share) {
-      navigator.share(data).catch(function () {});
-    } else if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(data.url).then(function () {
-        message.textContent = "Tautan halaman berhasil disalin.";
-      }).catch(function () {
-        window.prompt("Salin tautan halaman:", data.url);
-      });
-    } else {
-      window.prompt("Salin tautan halaman:", data.url);
-    }
-  });
-
-  root.querySelector("#mvvip-year").textContent = new Date().getFullYear();
-
-  selectVideo(0, false);
-})();
-</script>
-
-<!-- Social Bar Adsterra -->
-<script src="https://pl31329013.profitableratecpmnetwork.com/9d/45/cb/9d45cb09c38d48797d20b6237774d5ac.js"></script>
+</body>
+</html>
