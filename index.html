@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FullX-Stream- Video Eksklusif</title>
+    <title>V.Stream - Video Eksklusif</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
@@ -29,7 +29,7 @@
         <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-2 cursor-pointer" onclick="location.reload()">
                 <i class="fa-solid fa-play-circle text-white text-2xl"></i>
-                <span class="font-bold text-lg tracking-wide text-white">FullX-Stream</span>
+                <span class="font-bold text-lg tracking-wide text-white">V.Stream</span>
             </div>
             <!-- Pencarian -->
             <div class="w-full md:w-96 relative">
@@ -50,6 +50,14 @@
             <!-- WADAH PEMUTAR VIDEO -->
             <div id="playerContainer" class="relative bg-black rounded-2xl overflow-hidden shadow-2xl aspect-video flex items-center justify-center border-2 border-red-500/30">
                 
+                <!-- TOMBOL PLAY AWAL (AGAR PUSH MUNCUL SETELAH VIDEO DIPUTAR) -->
+                <div id="playOverlay" onclick="startVideoAndPush()" class="absolute inset-0 z-40 bg-black/50 flex flex-col items-center justify-center cursor-pointer transition hover:bg-black/40">
+                    <div class="w-20 h-20 rounded-full bg-red-600 flex items-center justify-center shadow-2xl transform transition hover:scale-110 text-white text-2xl pl-1">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+                    <span class="text-white text-sm font-bold mt-3 tracking-wide bg-red-600/80 px-4 py-1.5 rounded-full shadow-lg">Klik Untuk Putar Video</span>
+                </div>
+
                 <!-- IN-PAGE PUSH ATAS -->
                 <div id="pushTop" class="push-banner absolute top-3 left-3 right-3 z-30 bg-red-950/95 backdrop-blur-md border border-red-500/60 rounded-xl p-2.5 shadow-lg flex items-center justify-between gap-3">
                     <div class="flex items-center gap-2.5 cursor-pointer flex-grow overflow-hidden" onclick="triggerSmartlink()">
@@ -115,7 +123,7 @@
             <div class="flex justify-center items-center gap-3 mt-8">
                 <button id="prevPage" onclick="changePage(-1)" class="bg-white border border-red-200 text-slate-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">Sebelumnya</button>
                 <span id="pageInfo" class="text-sm font-medium text-slate-600">Hal 1 dari 4</span>
-                <button id="nextPage" onclick="changePage(1)" class="bg-white border border-red-200 text-slate-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">Selanjutnya</button>
+                <button id="nextPage" onclick="changePage(1)" class="bg-white border border-red-200 text-slate-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed">Selanjutnya</button>
             </div>
         </section>
 
@@ -146,7 +154,7 @@
 
     <!-- FOOTER -->
     <footer class="bg-red-600 border-t border-red-700 py-4 text-center text-xs text-white">
-        &copy; 2026 FullX-Strream. Hak Cipta Dilindungi.
+        &copy; 2026 V.Stream. Hak Cipta Dilindungi.
     </footer>
 
     <!-- SKRIP UTAMA -->
@@ -207,14 +215,15 @@
         function initApp() {
             setupCategories();
             renderVideos();
-            selectVideo(videosData[0].id);
+            prepareVideo(videosData[0].id);
 
             setTimeout(() => {
                 showFloatingPush();
             }, 2000);
         }
 
-        function selectVideo(id) {
+        // Menyiapkan video tapi belum memutar (menampilkan tombol play overlay)
+        function prepareVideo(id) {
             const video = videosData.find(v => v.id === id);
             if (!video) return;
 
@@ -222,18 +231,45 @@
             document.getElementById('currentVideoTitle').innerText = video.title;
             document.getElementById('currentVideoCategory').innerText = video.category;
             
+            // Sembunyikan push atas/bawah sebelum video diputar
+            document.getElementById('pushTop').classList.remove('active');
+            document.getElementById('pushBottom').classList.remove('active');
+            
+            // Tampilkan kembali tombol play overlay
+            document.getElementById('playOverlay').style.display = 'flex';
+
+            // Kosongkan src iframe dulu agar tidak autoplay
+            document.getElementById('mainVideoPlayer').src = "";
+        }
+
+        // Fungsi saat tombol play di tengah diklik pengunjung
+        function startVideoAndPush() {
+            const video = videosData.find(v => v.id === currentActiveVideoId);
+            if (!video) return;
+
+            // Masukkan link embed dan putar iframe
             const iframe = document.getElementById('mainVideoPlayer');
             iframe.src = video.embedUrl;
 
+            // Sembunyikan tombol play overlay
+            document.getElementById('playOverlay').style.display = 'none';
+
+            // Reset hitungan push
             pushTopCount = 0;
             pushBottomCount = 0;
             clearTimeout(topTimer);
             clearTimeout(bottomTimer);
 
-            setTimeout(() => {
-                showPush('top');
-                showPush('bottom');
-            }, 2000);
+            // Munculkan kedua In-Page Push atas & bawah secara bersamaan setelah video berputar
+            showPush('top');
+            showPush('bottom');
+        }
+
+        // Fungsi untuk memilih video dari daftar bawah
+        function selectVideo(id) {
+            prepareVideo(id);
+            // Langsung jalankan video dan munculkan push
+            startVideoAndPush();
         }
 
         function showPush(position) {
