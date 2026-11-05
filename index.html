@@ -3,231 +3,413 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>vidStream X</title>
-    <!-- Google Fonts & FontAwesome untuk ikon -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>FullX-Stream- Video Eksklusif</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
+        .push-banner {
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
         }
-        body {
-            background-color: #0b0f19;
-            color: #f8fafc;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-        }
-        .container {
-            width: 100%;
-            max-width: 480px;
-            background: #111827;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-        }
-        .video-preview {
-            position: relative;
-            width: 100%;
-            height: 240px;
-            background: #1f2937;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .video-preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: blur(4px) brightness(0.6);
-            transform: scale(1.05);
-        }
-        .play-btn-overlay {
-            position: absolute;
-            width: 75px;
-            height: 75px;
-            background: rgba(225, 29, 72, 0.9);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 28px;
-            box-shadow: 0 0 30px rgba(225, 29, 72, 0.7);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            animation: pulse-ring 2s infinite;
-        }
-        @keyframes pulse-ring {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(225, 29, 72, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
-        }
-        .video-preview:hover .play-btn-overlay {
-            transform: scale(1.1);
-            background: rgb(244, 63, 94);
-        }
-        .video-duration {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-            background: rgba(0, 0, 0, 0.75);
-            padding: 4px 8px;
-            font-size: 11px;
-            font-weight: 600;
-            border-radius: 4px;
-            color: #fff;
-        }
-        .content-body {
-            padding: 20px;
-        }
-        .meta-tags {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-        .tag {
-            background: rgba(225, 29, 72, 0.15);
-            color: #fb7185;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 4px 10px;
-            border-radius: 20px;
-        }
-        h1 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #ffffff;
-            line-height: 1.4;
-        }
-        .video-stats {
-            font-size: 12px;
-            color: #9ca3af;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding-bottom: 12px;
-        }
-        .btn-watch {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
-            color: white;
-            font-weight: 700;
-            font-size: 15px;
-            padding: 15px;
-            border-radius: 12px;
-            text-decoration: none;
-            box-shadow: 0 10px 20px rgba(225, 29, 72, 0.3);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-            margin-bottom: 10px;
-        }
-        .btn-watch:hover {
-            background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 15px 25px rgba(225, 29, 72, 0.5);
-        }
-        .btn-blog {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            color: #94a3b8;
-            font-weight: 600;
-            font-size: 13px;
-            padding: 12px;
-            border-radius: 12px;
-            text-decoration: none;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.2s ease;
-        }
-        .btn-blog:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-        }
-        .footer-note {
-            text-align: center;
-            font-size: 11px;
-            color: #6b7280;
-            margin-top: 15px;
-        }
-        .footer-note i {
-            color: #34d399;
+        .push-banner.active {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
         }
     </style>
 </head>
-<body>
+<body class="bg-white text-slate-800 min-h-screen flex flex-col justify-between">
 
-    <div class="container">
-        <!-- Thumbnail Video (Membuka Smartlink di Tab Baru, Video terbuka otomatis di tab ini lewat script) -->
-        <a href="https://www.profitableratecpmnetwork.com/hh55phupz7?key=035891703dff41ba6e0911050a5989af" class="video-preview" target="_blank" onclick="playVideoDirectly(event)">
-            <img src="https://i.ibb.co.com/4ZsVhJkR/1790091907304.jpg" alt="Video Thumbnail">
-            <div class="play-btn-overlay">
-                <i class="fa-solid fa-play"></i>
+    <!-- HEADER / NAVIGASI -->
+    <header class="bg-red-600 border-b border-red-700 sticky top-0 z-50 shadow-md">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="location.reload()">
+                <i class="fa-solid fa-play-circle text-white text-2xl"></i>
+                <span class="font-bold text-lg tracking-wide text-white">FullX-Stream</span>
             </div>
-            <div class="video-duration">
-                <i class="fa-solid fa-circle" style="font-size: 8px; color: #ef4444;"></i> 54:25
-            </div>
-        </a>
-
-        <!-- Bagian Informasi Video -->
-        <div class="content-body">
-            <div class="meta-tags">
-                <span class="tag"><i class="fa-solid fa-fire"></i> Hot Trend</span>
-                <span class="tag"><i class="fa-solid fa-shield"></i> HD Quality</span>
-            </div>
-
-            <h1>Dipaksa Ayah Tiri 💦</h1>
-            
-            <div class="video-stats">
-                <span><i class="fa-solid fa-eye"></i> 957k Penonton</span>
-                <span><i class="fa-solid fa-thumbs-up"></i> 98% Suka</span>
-            </div>
-
-            <!-- Tombol Utama (Membuka Smartlink di Tab Baru, Video terbuka otomatis di tab ini lewat script) -->
-            <a href="https://www.profitableratecpmnetwork.com/hh55phupz7?key=035891703dff41ba6e0911050a5989af" class="btn-watch" target="_blank" onclick="playVideoDirectly(event)">
-                <i class="fa-solid fa-play"></i> TONTON VIDEO SEKARANG
-            </a>
-
-            <!-- Tombol Menuju Website / Blog Anda -->
-            <a href="https://www.profitableratecpmnetwork.com/t9ie4pvgxk?key=135b46c3295f7dab9ee6b07683a130c1" class="btn-blog" target="_blank">
-                <i class="fa-solid fa-globe"></i> Kunjungi Website
-            </a>
-
-            <div class="footer-note">
-                <i class="fa-solid fa-lock"></i> Koneksi aman & terenkripsi.
+            <!-- Pencarian -->
+            <div class="w-full md:w-96 relative">
+                <input type="text" id="searchInput" placeholder="Cari video..." 
+                    class="w-full bg-white text-slate-800 border border-red-300 rounded-full px-4 py-2 pl-10 text-sm focus:outline-none focus:border-red-600 shadow-inner">
+                <i class="fa-solid fa-search absolute left-3.5 top-3 text-red-500 text-sm"></i>
             </div>
         </div>
+    </header>
+
+    <!-- KONTEN UTAMA -->
+    <main class="max-w-6xl mx-auto px-4 py-6 w-full flex-grow">
+        
+        <!-- BAGIAN PEMUTAR VIDEO -->
+        <section class="mb-10">
+            <h2 id="currentVideoTitle" class="text-xl md:text-2xl font-bold mb-3 text-slate-900">Memuat Video...</h2>
+            
+            <!-- WADAH PEMUTAR VIDEO -->
+            <div id="playerContainer" class="relative bg-black rounded-2xl overflow-hidden shadow-2xl aspect-video flex items-center justify-center border-2 border-red-500/30">
+                
+                <!-- IN-PAGE PUSH ATAS -->
+                <div id="pushTop" class="push-banner absolute top-3 left-3 right-3 z-30 bg-red-950/95 backdrop-blur-md border border-red-500/60 rounded-xl p-2.5 shadow-lg flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5 cursor-pointer flex-grow overflow-hidden" onclick="triggerSmartlink()">
+                        <div id="pushTopIcon" class="w-8 h-8 rounded-lg bg-red-700 flex items-center justify-center text-base flex-shrink-0 text-white">🚀</div>
+                        <div class="truncate">
+                            <h4 id="pushTopTitle" class="text-[11px] font-semibold text-red-200 truncate">Penawaran Spesial</h4>
+                            <p id="pushTopText" class="text-xs font-bold text-white truncate">Dapatkan bonus eksklusif sekarang juga!</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                        <button onclick="triggerSmartlink()" class="bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg transition">Klaim</button>
+                        <button onclick="closePush('top')" class="text-red-300 hover:text-white px-1"><i class="fa-solid fa-xmark text-base"></i></button>
+                    </div>
+                </div>
+
+                <!-- IFRAME PLAYER -->
+                <iframe id="mainVideoPlayer" src="" class="w-full h-full border-0" frameborder="0" allowfullscreen></iframe>
+
+                <!-- IN-PAGE PUSH BAWAH -->
+                <div id="pushBottom" class="push-banner absolute bottom-3 left-3 right-3 z-30 bg-red-950/95 backdrop-blur-md border border-red-500/60 rounded-xl p-2.5 shadow-lg flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5 cursor-pointer flex-grow overflow-hidden" onclick="triggerSmartlink()">
+                        <div id="pushBottomIcon" class="w-8 h-8 rounded-lg bg-red-700 flex items-center justify-center text-base flex-shrink-0 text-white">💎</div>
+                        <div class="truncate">
+                            <h4 id="pushBottomTitle" class="text-[11px] font-semibold text-red-200 truncate">Rekomendasi Terbaik</h4>
+                            <p id="pushBottomText" class="text-xs font-bold text-white truncate">Gabung sekarang dan nikmati keuntungannya!</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 flex-shrink-0">
+                        <button onclick="triggerSmartlink()" class="bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg transition">Buka</button>
+                        <button onclick="closePush('bottom')" class="text-red-300 hover:text-white px-1"><i class="fa-solid fa-xmark text-base"></i></button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- KONTROL VIDEO -->
+            <div class="flex items-center justify-between mt-3 bg-red-50 p-3 rounded-xl border border-red-200 shadow-sm">
+                <span id="currentVideoCategory" class="text-xs bg-red-600 text-white px-3 py-1 rounded-full font-medium">Kategori</span>
+                <div class="flex items-center gap-3">
+                    <button onclick="shareVideo()" class="text-sm bg-white hover:bg-red-100 text-slate-700 border border-red-200 px-3 py-1.5 rounded-lg flex items-center gap-2 transition">
+                        <i class="fa-solid fa-share-nodes text-red-600"></i> Bagikan
+                    </button>
+                    <button onclick="toggleFullscreen()" class="text-sm bg-white hover:bg-red-100 text-slate-700 border border-red-200 px-3 py-1.5 rounded-lg flex items-center gap-2 transition">
+                        <i class="fa-solid fa-expand text-red-600"></i> Layar Penuh
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- KATEGORI & DAFTAR VIDEO -->
+        <section>
+            <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+                <h3 class="text-lg font-bold text-slate-900">Daftar Video</h3>
+                <div id="categoryFilters" class="flex gap-2 overflow-x-auto pb-1 max-w-full">
+                    <button onclick="filterCategory('Semua')" class="cat-btn bg-red-600 text-white text-xs px-3 py-1.5 rounded-full font-medium transition shadow-sm">Semua</button>
+                </div>
+            </div>
+
+            <!-- Grid Video -->
+            <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"></div>
+
+            <!-- Pagination -->
+            <div class="flex justify-center items-center gap-3 mt-8">
+                <button id="prevPage" onclick="changePage(-1)" class="bg-white border border-red-200 text-slate-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">Sebelumnya</button>
+                <span id="pageInfo" class="text-sm font-medium text-slate-600">Hal 1 dari 4</span>
+                <button id="nextPage" onclick="changePage(1)" class="bg-white border border-red-200 text-slate-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">Selanjutnya</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- IN-PAGE PUSH BAWAH (MELAYANG TETAP / FIXED) -->
+    <div id="floatingPush" class="push-banner fixed bottom-4 right-4 z-50 w-80 max-w-[calc(100vw-2rem)] bg-white/95 backdrop-blur-md border-2 border-red-600 rounded-2xl p-4 shadow-2xl flex flex-col gap-3">
+        <div class="flex items-start justify-between gap-3">
+            <div class="flex items-center gap-3 cursor-pointer flex-grow" onclick="triggerSmartlink()">
+                <div class="relative flex-shrink-0">
+                    <img src="https://i.ibb.co.com/LhY0hZpK/adb5c19a3fa43908058f009dd4ee995a.jpg" class="w-12 h-12 rounded-full object-cover border-2 border-red-600 shadow-md">
+                    <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full animate-pulse"></span>
+                </div>
+                <div class="overflow-hidden">
+                    <div class="flex items-center gap-2">
+                        <h4 id="floatingPushTitle" class="text-xs font-bold text-red-600">Admin Online</h4>
+                        <span class="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold">Online</span>
+                    </div>
+                    <p id="floatingPushText" class="text-sm text-slate-800 font-medium mt-1 leading-snug">Mau dibantu pola gacor malam ini?</p>
+                </div>
+            </div>
+            <button onclick="closeFloatingPush()" class="text-slate-400 hover:text-red-600 p-1 flex-shrink-0"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <button onclick="triggerSmartlink()" class="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 rounded-xl transition shadow-md">
+            Mulai Chat Sekarang
+        </button>
     </div>
 
+    <!-- FOOTER -->
+    <footer class="bg-red-600 border-t border-red-700 py-4 text-center text-xs text-white">
+        &copy; 2026 FullX-Strream. Hak Cipta Dilindungi.
+    </footer>
+
+    <!-- SKRIP UTAMA -->
     <script>
-        function playVideoDirectly(event) {
-            // Biarkan link target="_blank" membuka Smartlink Adsterra secara natural di tab baru
-            // Lalu arahkan halaman ini ke file video MP4 setelah jeda sangat singkat
-            setTimeout(function() {
-                window.location.href = "https://trbnvideo.live/v/TfBDyY4J";
-            }, 300);
+        const SMARTLINK_URL = "https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2";
+
+        const videosData = [
+            { id: 1, title: "Goyangan Hot Menggoda Bikin Lemes di Kamar", category: "Hot", embedUrl: "https://vidxxx.vip/e/54birgwl", poster: "https://i.ibb.co.com/3mr8M7v7/1793767600887.jpg" },
+            { id: 2, title: "Desahan Manja Pacar Cantik Pas Berduaan", category: "Hot", embedUrl: "https://vidxxx.vip/e/tydrszuv", poster: "https://i.ibb.co.com/9mBnCGtS/1793767589103.jpg" },
+            { id: 3, title: "Aksi Nakal Malam Jumat Bikin Ketagihan", category: "Sensual", embedUrl: "https://vidxxx.vip/e/c9lz5l4m", poster: "https://i.ibb.co.com/M52PQp5p/1793767574587.jpg" },
+            { id: 4, title: "Minta Jatah Duluan Gegara Suami Pulang Malam", category: "Sensual", embedUrl: "https://vidxxx.vip/e/ohoepzts", poster: "https://i.ibb.co.com/0VXctt0x/1793767508529.jpg" },
+            { id: 5, title: "Buka-bukanan di Kosan Sambil Main Licin", category: "Eksklusif", embedUrl: "https://vidxxx.vip/e/zmg0bdik", poster: "https://i.ibb.co.com/v4gL0StF/1793767490790.jpg" },
+            { id: 6, title: "Gadis Montok Ngajak 'Main' Tanpa Busana", category: "Eksklusif", embedUrl: "https://vidxxx.vip/e/insv054q", poster: "https://i.ibb.co.com/xKxy1wqZ/1793767469519.jpg" },
+            { id: 7, title: "Sentuhan Lembut Area Sensitif Bikin Basah", category: "Hot", embedUrl: "https://vidxxx.vip/e/xvqqx092", poster: "https://i.ibb.co.com/v6tCJFCc/1793767451951.jpg" },
+            { id: 8, title: "Nikmatnya Layani 'Tamu' Spesial Sampai Pagi", category: "Hot", embedUrl: "https://vidxxx.vip/e/ryjnrmnv", poster: "https://i.ibb.co.com/DPBQHxhZ/1793767445024.jpg" },
+            { id: 9, title: "Main Kucing-kucingan Berdua Tanpa Sehelai Benang", category: "Sensual", embedUrl: "https://vidxxx.vip/e/uk4u79mi", poster: "https://i.ibb.co.com/cS2QGnLf/e89771e819d28a1ae0388d2af852d2f9.jpg" },
+            { id: 10, title: "Digoyang Erotis Sampai Lemas Tak Berdaya", category: "Sensual", embedUrl: "https://vidxxx.vip/e/bwvkxy6f", poster: "https://i.ibb.co.com/qMDYTsbY/ae5557d0a21d9be9169a2019329f8e5d.jpg" },
+            { id: 11, title: "Aksi Panas Diatas Ranjang Sambil Desah Manja", category: "Eksklusif", embedUrl: "https://vidxxx.vip/e/ihd7oydc", poster: "https://i.ibb.co.com/4ZsVhJkR/1790091907304.jpg" },
+            { id: 12, title: "Pamer Tubuh Mulus Sembari Minta Diterkam", category: "Eksklusif", embedUrl: "https://vidxxx.vip/e/fbnxg0p4", poster: "https://i.ibb.co.com/Rqw6xhJ/1790091869047.jpg" },
+            { id: 13, title: "Gaya Nungging Paling Dicari Bikin Nafsu Naik", category: "Terbaru", embedUrl: "https://vidxxx.vip/e/jrvp2bi1", poster: "https://i.ibb.co.com/4wsHyS8n/1793065681242.jpg" },
+            { id: 14, title: "Pelukan Erat Sambil Saling Cumbu di Dalam Kamar", category: "Terbaru", embedUrl: "https://vidxxx.vip/e/eeuer648", poster: "https://i.ibb.co.com/7dfrRv4k/1793129144788.jpg" },
+            { id: 15, title: "Sentuhan Nakal Bikin Merinding Sekujur Tubuh", category: "Terbaru", embedUrl: "https://vidxxx.vip/e/cv4o2804", poster: "https://i.ibb.co.com/Z6qpYMWZ/IMG-20261104-100544-611.jpg" },
+            { id: 16, title: "Durasi Panjang Puas Main Basah-basahan", category: "Terbaru", embedUrl: "https://vidxxx.vip/e/gnrf4jt5", poster: "https://i.ibb.co.com/2H47tZc/IMG-20261104-100540-372.jpg" }
+        ];
+
+        const pushVariations = [
+            { icon: "🚀", title: "Flash Sale Eksklusif", text: "Akses penawaran spesial terbatas hari ini!" },
+            { icon: "💎", title: "Bonus Spesial Member", text: "Klik di sini untuk klaim hadiah harianmu." },
+            { icon: "🔥", title: "Trending Hari Ini", text: "Jangan lewatkan kesempatan emas ini, cek sekarang!" },
+            { icon: "🎁", title: "Kekejutan Hadiah", text: "Kamu terpilih mendapatkan akses VIP gratis!" },
+            { icon: "⭐", title: "Penawaran Terbatas", text: "Temukan kejutan menarik khusus untukmu." }
+        ];
+
+        const adminPushVariations = [
+            { title: "Admin Online", text: "Mau dibantu pola gacor malam ini?" },
+            { title: "CS Official", text: "Yuk klaim bonus maxwin sekarang" },
+            { title: "Admin Gacor", text: "Mau dibantu pola gacor malam ini?" },
+            { title: "CS Official", text: "Yuk klaim bonus maxwin sekarang" }
+        ];
+
+        let currentActiveVideoId = null;
+        let pushTopCount = 0;
+        let pushBottomCount = 0;
+        const MAX_PUSH_PER_VIDEO = 5;
+        let topTimer = null;
+        let bottomTimer = null;
+        let floatingTimer = null;
+
+        let currentPage = 1;
+        const itemsPerPage = 4;
+        let currentCategory = "Semua";
+        let searchQuery = "";
+
+        function triggerSmartlink() {
+            window.open(SMARTLINK_URL, '_blank');
         }
+
+        function initApp() {
+            setupCategories();
+            renderVideos();
+            selectVideo(videosData[0].id);
+
+            setTimeout(() => {
+                showFloatingPush();
+            }, 2000);
+        }
+
+        function selectVideo(id) {
+            const video = videosData.find(v => v.id === id);
+            if (!video) return;
+
+            currentActiveVideoId = id;
+            document.getElementById('currentVideoTitle').innerText = video.title;
+            document.getElementById('currentVideoCategory').innerText = video.category;
+            
+            const iframe = document.getElementById('mainVideoPlayer');
+            iframe.src = video.embedUrl;
+
+            pushTopCount = 0;
+            pushBottomCount = 0;
+            clearTimeout(topTimer);
+            clearTimeout(bottomTimer);
+
+            setTimeout(() => {
+                showPush('top');
+                showPush('bottom');
+            }, 2000);
+        }
+
+        function showPush(position) {
+            if (position === 'top' && pushTopCount >= MAX_PUSH_PER_VIDEO) return;
+            if (position === 'bottom' && pushBottomCount >= MAX_PUSH_PER_VIDEO) return;
+
+            const randomVar = pushVariations[Math.floor(Math.random() * pushVariations.length)];
+            
+            if (position === 'top') {
+                pushTopCount++;
+                document.getElementById('pushTopIcon').innerText = randomVar.icon;
+                document.getElementById('pushTopTitle').innerText = randomVar.title;
+                document.getElementById('pushTopText').innerText = randomVar.text;
+                document.getElementById('pushTop').classList.add('active');
+            } else {
+                pushBottomCount++;
+                document.getElementById('pushBottomIcon').innerText = randomVar.icon;
+                document.getElementById('pushBottomTitle').innerText = randomVar.title;
+                document.getElementById('pushBottomText').innerText = randomVar.text;
+                document.getElementById('pushBottom').classList.add('active');
+            }
+        }
+
+        function showFloatingPush() {
+            const randomVar = adminPushVariations[Math.floor(Math.random() * adminPushVariations.length)];
+            const el = document.getElementById('floatingPush');
+            el.querySelector('h4').innerText = randomVar.title;
+            el.querySelector('p').innerText = randomVar.text;
+            el.classList.add('active');
+        }
+
+        function closePush(position) {
+            triggerSmartlink();
+
+            if (position === 'top') {
+                document.getElementById('pushTop').classList.remove('active');
+                if (pushTopCount < MAX_PUSH_PER_VIDEO) {
+                    topTimer = setTimeout(() => showPush('top'), 5000);
+                }
+            } else {
+                document.getElementById('pushBottom').classList.remove('active');
+                if (pushBottomCount < MAX_PUSH_PER_VIDEO) {
+                    bottomTimer = setTimeout(() => showPush('bottom'), 5000);
+                }
+            }
+        }
+
+        function closeFloatingPush() {
+            triggerSmartlink();
+            document.getElementById('floatingPush').classList.remove('active');
+            clearTimeout(floatingTimer);
+            floatingTimer = setTimeout(() => {
+                showFloatingPush();
+            }, 5000);
+        }
+
+        function renderVideos() {
+            const grid = document.getElementById('videoGrid');
+            grid.innerHTML = '';
+
+            let filtered = videosData.filter(v => {
+                const matchCat = currentCategory === "Semua" || v.category === currentCategory;
+                const matchSearch = v.title.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchCat && matchSearch;
+            });
+
+            const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            const start = (currentPage - 1) * itemsPerPage;
+            const paginatedItems = filtered.slice(start, start + itemsPerPage);
+
+            if (paginatedItems.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-8 text-slate-500">Tidak ada video ditemukan.</div>`;
+            } else {
+                paginatedItems.forEach(video => {
+                    const card = document.createElement('div');
+                    card.className = "bg-white rounded-xl overflow-hidden border border-red-200 hover:border-red-600 transition cursor-pointer flex flex-col justify-between shadow-md";
+                    
+                    card.onclick = () => {
+                        selectVideo(video.id);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    };
+
+                    card.innerHTML = `
+                        <div class="relative w-full h-32 bg-slate-100 overflow-hidden flex items-center justify-center">
+                            <img src="${video.poster}" alt="${video.title}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black/30 flex items-center justify-center play-btn-wrapper" onclick="event.stopPropagation(); handleThumbnailPlay(${video.id})">
+                                <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center shadow-lg transform transition hover:scale-110 text-white">
+                                    <i class="fa-solid fa-play text-sm ml-0.5"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <span class="text-[9px] bg-red-100 text-red-600 px-2 py-0.5 rounded font-bold">${video.category}</span>
+                            <h4 class="text-xs font-bold text-slate-800 mt-1.5 line-clamp-2 leading-snug">${video.title}</h4>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+            }
+
+            document.getElementById('pageInfo').innerText = `Hal ${currentPage} dari ${totalPages}`;
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage >= totalPages;
+        }
+
+        function handleThumbnailPlay(id) {
+            triggerSmartlink();
+            selectVideo(id);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function setupCategories() {
+            const categories = ["Semua", ...new Set(videosData.map(v => v.category))];
+            const container = document.getElementById('categoryFilters');
+            container.innerHTML = '';
+
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = `cat-btn text-xs px-3 py-1.5 rounded-full font-medium transition shadow-sm ${cat === currentCategory ? 'bg-red-600 text-white' : 'bg-white border border-red-200 text-slate-700 hover:bg-red-50'}`;
+                btn.innerText = cat;
+                btn.onclick = () => {
+                    currentCategory = cat;
+                    currentPage = 1;
+                    renderVideos();
+                    document.querySelectorAll('.cat-btn').forEach(b => {
+                        b.classList.remove('bg-red-600', 'text-white');
+                        b.classList.add('bg-white', 'border', 'border-red-200', 'text-slate-700');
+                    });
+                    btn.classList.remove('bg-white', 'border', 'border-red-200', 'text-slate-700');
+                    btn.classList.add('bg-red-600', 'text-white');
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            renderVideos();
+        }
+
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            currentPage = 1;
+            renderVideos();
+        });
+
+        function shareVideo() {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.getElementById('currentVideoTitle').innerText,
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert("Tautan video berhasil disalin ke clipboard!");
+            }
+        }
+
+        function toggleFullscreen() {
+            const container = document.getElementById('playerContainer');
+            if (container.requestFullscreen) {
+                container.requestFullscreen();
+            } else if (container.webkitRequestFullscreen) {
+                container.webkitRequestFullscreen();
+            } else if (container.msRequestFullscreen) {
+                container.msRequestFullscreen();
+            }
+        }
+
+        window.onload = initApp;
     </script>
+
+    <!-- KODE POPUNDER ADSTERRA -->
+    <script src="https://pl30410625.profitableratecpmnetwork.com/dd/a8/36/dda8365aecb13e4cb7620d95645bb3d8.js"></script>
 
 </body>
 </html>
