@@ -19,43 +19,78 @@
             transform: translateY(0);
             opacity: 1;
             pointer-events: auto;
+            animation: blinkEffect 3.5s infinite ease-in-out;
+        }
+
+        /* Animasi kedap-kedip slow */
+        @keyframes blinkEffect {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.35; }
+        }
+
+        /* Animasi kedip khusus untuk ikon bulat besar */
+        .floating-badge-fixed {
+            transition: all 0.3s ease-in-out;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.8);
+        }
+        .floating-badge-fixed.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1);
+            animation: blinkEffect 3.5s infinite ease-in-out;
+        }
+
+        /* Penyesuaian responsif khusus untuk layar besar (Laptop/Monitor) */
+        @media (min-width: 768px) {
+            .responsive-badge {
+                width: 110px !important;
+                height: 110px !important;
+            }
+            .responsive-badge i {
+                font-size: 32px !important;
+            }
+            .responsive-badge span {
+                font-size: 13px !important;
+            }
         }
     </style>
 </head>
-<body class="bg-white text-slate-800 min-h-screen flex flex-col justify-between">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
 
     <!-- HEADER / NAVIGASI -->
     <header class="bg-red-600 border-b border-red-700 sticky top-0 z-50 shadow-md">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-2 cursor-pointer" onclick="location.reload()">
-                <i class="fa-solid fa-play-circle text-white text-2xl"></i>
-                <span class="font-bold text-lg tracking-wide text-white">V.Stream</span>
+                <i class="fa-solid fa-play-circle text-white text-2xl sm:text-3xl"></i>
+                <span class="font-bold text-lg sm:text-xl tracking-wide text-white">V.Stream</span>
             </div>
             <!-- Pencarian -->
-            <div class="w-full md:w-96 relative">
+            <div class="w-48 sm:w-80 md:w-96 relative">
                 <input type="text" id="searchInput" placeholder="Cari video..." 
-                    class="w-full bg-white text-slate-800 border border-red-300 rounded-full px-4 py-2 pl-10 text-sm focus:outline-none focus:border-red-600 shadow-inner">
-                <i class="fa-solid fa-search absolute left-3.5 top-3 text-red-500 text-sm"></i>
+                    class="w-full bg-white text-slate-800 border border-red-300 rounded-full px-4 py-2 pl-10 text-xs sm:text-sm focus:outline-none focus:border-red-600 shadow-inner">
+                <i class="fa-solid fa-search absolute left-3.5 top-2.5 sm:top-3 text-red-500 text-xs sm:text-sm"></i>
             </div>
         </div>
     </header>
 
     <!-- KONTEN UTAMA -->
-    <main class="max-w-6xl mx-auto px-4 py-6 w-full flex-grow">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 w-full flex-grow">
         
         <!-- BAGIAN PEMUTAR VIDEO -->
-        <section class="mb-10">
-            <h2 id="currentVideoTitle" class="text-xl md:text-2xl font-bold mb-3 text-slate-900">Memuat Video...</h2>
+        <section class="mb-10 max-w-5xl mx-auto">
+            <h2 id="currentVideoTitle" class="text-lg sm:text-2xl font-bold mb-3 text-slate-900 leading-snug">Memuat Video...</h2>
             
             <!-- WADAH PEMUTAR VIDEO -->
             <div id="playerContainer" class="relative bg-black rounded-2xl overflow-hidden shadow-2xl aspect-video flex items-center justify-center border-2 border-red-500/30">
                 
-                <!-- TOMBOL PLAY AWAL (PUSH ATAS MUNCUL SETELAH INI DIKLIK) -->
+                <!-- TOMBOL PLAY AWAL -->
                 <div id="playOverlay" onclick="startVideoAndPush()" class="absolute inset-0 z-40 bg-black/50 flex flex-col items-center justify-center cursor-pointer transition hover:bg-black/40">
-                    <div class="w-20 h-20 rounded-full bg-red-600 flex items-center justify-center shadow-2xl transform transition hover:scale-110 text-white text-2xl pl-1">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-red-600 flex items-center justify-center shadow-2xl transform transition hover:scale-110 text-white text-xl sm:text-2xl pl-1">
                         <i class="fa-solid fa-play"></i>
                     </div>
-                    <span class="text-white text-sm font-bold mt-3 tracking-wide bg-red-600/80 px-4 py-1.5 rounded-full shadow-lg">Klik Untuk Putar Video</span>
+                    <span class="text-white text-xs sm:text-sm font-bold mt-3 tracking-wide bg-red-600/80 px-4 py-1.5 rounded-full shadow-lg">Klik Untuk Putar Video</span>
                 </div>
 
                 <!-- IN-PAGE PUSH ATAS -->
@@ -63,12 +98,12 @@
                     <div class="flex items-center gap-2.5 cursor-pointer flex-grow overflow-hidden" onclick="triggerSmartlink()">
                         <div id="pushTopIcon" class="w-8 h-8 rounded-lg bg-red-700 flex items-center justify-center text-base flex-shrink-0 text-white">🚀</div>
                         <div class="truncate">
-                            <h4 id="pushTopTitle" class="text-[11px] font-semibold text-red-200 truncate">Penawaran Spesial</h4>
-                            <p id="pushTopText" class="text-xs font-bold text-white truncate">Dapatkan bonus eksklusif sekarang juga!</p>
+                            <h4 id="pushTopTitle" class="text-[11px] sm:text-xs font-semibold text-red-200 truncate">Penawaran Spesial</h4>
+                            <p id="pushTopText" class="text-[11px] sm:text-xs font-bold text-white truncate">Dapatkan bonus eksklusif sekarang juga!</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                        <button onclick="triggerSmartlink()" class="bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg transition">Klaim</button>
+                        <button onclick="triggerSmartlink()" class="bg-red-600 hover:bg-red-700 text-white text-[10px] sm:text-[11px] font-bold px-2.5 py-1 rounded-lg transition">Klaim</button>
                         <button onclick="closePush('top')" class="text-red-300 hover:text-white px-1"><i class="fa-solid fa-xmark text-base"></i></button>
                     </div>
                 </div>
@@ -81,12 +116,12 @@
                     <div class="flex items-center gap-2.5 cursor-pointer flex-grow overflow-hidden" onclick="triggerSmartlink()">
                         <div id="pushBottomIcon" class="w-8 h-8 rounded-lg bg-red-700 flex items-center justify-center text-base flex-shrink-0 text-white">💎</div>
                         <div class="truncate">
-                            <h4 id="pushBottomTitle" class="text-[11px] font-semibold text-red-200 truncate">Rekomendasi Terbaik</h4>
-                            <p id="pushBottomText" class="text-xs font-bold text-white truncate">Gabung sekarang dan nikmati keuntungannya!</p>
+                            <h4 id="pushBottomTitle" class="text-[11px] sm:text-xs font-semibold text-red-200 truncate">Rekomendasi Terbaik</h4>
+                            <p id="pushBottomText" class="text-[11px] sm:text-xs font-bold text-white truncate">Gabung sekarang dan nikmati keuntungannya!</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-1.5 flex-shrink-0">
-                        <button onclick="triggerSmartlink()" class="bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg transition">Buka</button>
+                        <button onclick="triggerSmartlink()" class="bg-red-600 hover:bg-red-700 text-white text-[10px] sm:text-[11px] font-bold px-2.5 py-1 rounded-lg transition">Buka</button>
                         <button onclick="closePush('bottom')" class="text-red-300 hover:text-white px-1"><i class="fa-solid fa-xmark text-base"></i></button>
                     </div>
                 </div>
@@ -94,13 +129,13 @@
             </div>
 
             <!-- KONTROL VIDEO -->
-            <div class="flex items-center justify-between mt-3 bg-red-50 p-3 rounded-xl border border-red-200 shadow-sm">
+            <div class="flex items-center justify-between mt-3 bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
                 <span id="currentVideoCategory" class="text-xs bg-red-600 text-white px-3 py-1 rounded-full font-medium">Kategori</span>
-                <div class="flex items-center gap-3">
-                    <button onclick="shareVideo()" class="text-sm bg-white hover:bg-red-100 text-slate-700 border border-red-200 px-3 py-1.5 rounded-lg flex items-center gap-2 transition">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <button onclick="shareVideo()" class="text-xs sm:text-sm bg-slate-50 hover:bg-red-50 text-slate-700 border border-slate-200 px-3 py-1.5 rounded-lg flex items-center gap-2 transition">
                         <i class="fa-solid fa-share-nodes text-red-600"></i> Bagikan
                     </button>
-                    <button onclick="toggleFullscreen()" class="text-sm bg-white hover:bg-red-100 text-slate-700 border border-red-200 px-3 py-1.5 rounded-lg flex items-center gap-2 transition">
+                    <button onclick="toggleFullscreen()" class="text-xs sm:text-sm bg-slate-50 hover:bg-red-50 text-slate-700 border border-slate-200 px-3 py-1.5 rounded-lg flex items-center gap-2 transition">
                         <i class="fa-solid fa-expand text-red-600"></i> Layar Penuh
                     </button>
                 </div>
@@ -117,32 +152,43 @@
             </div>
 
             <!-- Grid Video -->
-            <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"></div>
+            <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
 
             <!-- Pagination -->
             <div class="flex justify-center items-center gap-3 mt-8">
-                <button id="prevPage" onclick="changePage(-1)" class="bg-white border border-red-200 text-slate-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">Sebelumnya</button>
-                <span id="pageInfo" class="text-sm font-medium text-slate-600">Hal 1 dari 4</span>
-                <button id="nextPage" onclick="changePage(1)" class="bg-white border border-red-200 text-slate-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">Selanjutnya</button>
+                <button id="prevPage" onclick="changePage(-1)" class="bg-white border border-slate-200 text-slate-700 hover:bg-red-50 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">Sebelumnya</button>
+                <span id="pageInfo" class="text-xs sm:text-sm font-medium text-slate-600">Hal 1 dari 4</span>
+                <button id="nextPage" onclick="changePage(1)" class="bg-white border border-slate-200 text-slate-700 hover:bg-red-50 px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">Selanjutnya</button>
             </div>
         </section>
 
     </main>
 
-    <!-- IN-PAGE PUSH BAWAH (MELAYANG TETAP / FIXED) -->
-    <div id="floatingPush" class="push-banner fixed bottom-4 right-4 z-50 w-80 max-w-[calc(100vw-2rem)] bg-white/95 backdrop-blur-md border-2 border-red-600 rounded-2xl p-4 shadow-2xl flex flex-col gap-3">
+    <!-- IKON BULAT BESAR (LANGSUNG MUNCUL DI AWAL & LOOPING TIAP 5 DETIK) -->
+    <div id="rightUpperBadge" class="floating-badge-fixed fixed bottom-32 sm:bottom-36 right-3 sm:right-6 z-50 flex flex-col items-center">
+        <button onclick="closeBigBadge()" class="absolute -top-3 -left-2 sm:-left-3 bg-slate-800 text-white hover:bg-red-600 w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 border-white shadow-md transition z-10">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div onclick="triggerSmartlink()" class="responsive-badge cursor-pointer bg-red-600 border-4 border-white w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center shadow-2xl text-white hover:scale-105 transition">
+            <i class="fa-solid fa-gift text-xl sm:text-2xl animate-bounce"></i>
+            <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider leading-tight mt-1">KLAIM VIP</span>
+        </div>
+    </div>
+
+    <!-- IN-PAGE PUSH BAWAH (CHAT ADMIN) -->
+    <div id="floatingPush" class="push-banner fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-50 w-72 sm:w-80 max-w-[calc(100vw-1.5rem)] bg-white/95 backdrop-blur-md border-2 border-red-600 rounded-2xl p-3 sm:p-4 shadow-2xl flex flex-col gap-3">
         <div class="flex items-start justify-between gap-3">
             <div class="flex items-center gap-3 cursor-pointer flex-grow" onclick="triggerSmartlink()">
                 <div class="relative flex-shrink-0">
-                    <img src="https://i.ibb.co.com/LhY0hZpK/adb5c19a3fa43908058f009dd4ee995a.jpg" class="w-12 h-12 rounded-full object-cover border-2 border-red-600 shadow-md">
-                    <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full animate-pulse"></span>
+                    <img src="https://i.ibb.co.com/LhY0hZpK/adb5c19a3fa43908058f009dd4ee995a.jpg" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-red-600 shadow-md">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 sm:w-3.5 sm:h-3.5 bg-emerald-500 border-2 border-white rounded-full animate-pulse"></span>
                 </div>
                 <div class="overflow-hidden">
                     <div class="flex items-center gap-2">
                         <h4 id="floatingPushTitle" class="text-xs font-bold text-red-600">Admin Online</h4>
                         <span class="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold">Online</span>
                     </div>
-                    <p id="floatingPushText" class="text-sm text-slate-800 font-medium mt-1 leading-snug">Mau dibantu pola gacor malam ini?</p>
+                    <p id="floatingPushText" class="text-xs sm:text-sm text-slate-800 font-medium mt-1 leading-snug">Mau dibantu pola gacor malam ini?</p>
                 </div>
             </div>
             <button onclick="closeFloatingPush()" class="text-slate-400 hover:text-red-600 p-1 flex-shrink-0"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -162,22 +208,22 @@
         const SMARTLINK_URL = "https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2";
 
         const videosData = [
-            { id: 1, title: "Goyangan Hot Menggoda Bikin Lemes di Kamar", category: "Hot", embedUrl: "https://trbnvideo.live/e/jqUE2s1j", poster: "https://i.ibb.co.com/3mr8M7v7/1793767600887.jpg" },
-            { id: 2, title: "Desahan Manja Pacar Cantik Pas Berduaan", category: "Hot", embedUrl: "https://trbnvideo.live/e/rkB2lJU0", poster: "https://i.ibb.co.com/9mBnCGtS/1793767589103.jpg" },
-            { id: 3, title: "Aksi Nakal Malam Jumat Bikin Ketagihan", category: "Sensual", embedUrl: "https://trbnvideo.live/e/rF4FRrTZ", poster: "https://i.ibb.co.com/M52PQp5p/1793767574587.jpg" },
-            { id: 4, title: "Minta Jatah Duluan Gegara Suami Pulang Malam", category: "Sensual", embedUrl: "https://trbnvideo.live/e/CJqvagsK", poster: "https://i.ibb.co.com/0VXctt0x/1793767508529.jpg" },
-            { id: 5, title: "Buka-bukanan di Kosan Sambil Main Licin", category: "Eksklusif", embedUrl: "https://trbnvideo.live/e/10VFNLlE", poster: "https://i.ibb.co.com/v4gL0StF/1793767490790.jpg" },
-            { id: 6, title: "Gadis Montok Ngajak 'Main' Tanpa Busana", category: "Eksklusif", embedUrl: "https://trbnvideo.live/e/2buj45jB", poster: "https://i.ibb.co.com/xKxy1wqZ/1793767469519.jpg" },
-            { id: 7, title: "Sentuhan Lembut Area Sensitif Bikin Basah", category: "Hot", embedUrl: "https://trbnvideo.live/e/kTSpjon2", poster: "https://i.ibb.co.com/v6tCJFCc/1793767451951.jpg" },
-            { id: 8, title: "Nikmatnya Layani 'Tamu' Spesial Sampai Pagi", category: "Hot", embedUrl: "https://trbnvideo.live/e/nQ29SZ0p", poster: "https://i.ibb.co.com/DPBQHxhZ/1793767445024.jpg" },
-            { id: 9, title: "Main Kucing-kucingan Berdua Tanpa Sehelai Benang", category: "Sensual", embedUrl: "https://trbnvideo.live/e/O6iFeyex", poster: "https://i.ibb.co.com/cS2QGnLf/e89771e819d28a1ae0388d2af852d2f9.jpg" },
-            { id: 10, title: "Digoyang Erotis Sampai Lemas Tak Berdaya", category: "Sensual", embedUrl: "https://trbnvideo.live/e/7Ig1S0Yc", poster: "https://i.ibb.co.com/qMDYTsbY/ae5557d0a21d9be9169a2019329f8e5d.jpg" },
-            { id: 11, title: "Aksi Panas Diatas Ranjang Sambil Desah Manja", category: "Eksklusif", embedUrl: "https://trbnvideo.live/e/yYcAJtcH", poster: "https://i.ibb.co.com/4ZsVhJkR/1790091907304.jpg" },
-            { id: 12, title: "Pamer Tubuh Mulus Sembari Minta Diterkam", category: "Eksklusif", embedUrl: "https://trbnvideo.live/e/4O1gPMCe", poster: "https://i.ibb.co.com/Rqw6xhJ/1790091869047.jpg" },
-            { id: 13, title: "Gaya Nungging Paling Dicari Bikin Nafsu Naik", category: "Terbaru", embedUrl: "https://trbnvideo.live/e/lSCeUX2g", poster: "https://i.ibb.co.com/4wsHyS8n/1793065681242.jpg" },
-            { id: 14, title: "Pelukan Erat Sambil Saling Cumbu di Dalam Kamar", category: "Terbaru", embedUrl: "https://trbnvideo.live/e/q2Zg5y2K", poster: "https://i.ibb.co.com/7dfrRv4k/1793129144788.jpg" },
-            { id: 15, title: "Sentuhan Nakal Bikin Merinding Sekujur Tubuh", category: "Terbaru", embedUrl: "https://trbnvideo.live/e/10VFNLlE", poster: "https://i.ibb.co.com/Z6qpYMWZ/IMG-20261104-100544-611.jpg" },
-            { id: 16, title: "Durasi Panjang Puas Main Basah-basahan", category: "Terbaru", embedUrl: "https://trbnvideo.live/e/l8lwFSp5", poster: "https://i.ibb.co.com/2H47tZc/IMG-20261104-100540-372.jpg" }
+            { id: 1, title: "Goyangan Hot Menggoda Bikin Lemes di Kamar", category: "Hot", embedUrl: "https://vizey.net/e/jqUE2s1j", poster: "https://i.ibb.co.com/3mr8M7v7/1793767600887.jpg" },
+            { id: 2, title: "Desahan Manja Pacar Cantik Pas Berduaan", category: "Hot", embedUrl: "https://vizey.net/e/rkB2lJU0", poster: "https://i.ibb.co.com/9mBnCGtS/1793767589103.jpg" },
+            { id: 3, title: "Aksi Nakal Malam Jumat Bikin Ketagihan", category: "Sensual", embedUrl: "https://vizey.net/e/rF4FRrTZ", poster: "https://i.ibb.co.com/M52PQp5p/1793767574587.jpg" },
+            { id: 4, title: "Minta Jatah Duluan Gegara Suami Pulang Malam", category: "Sensual", embedUrl: "https://vizey.net/e/CJqvagsK", poster: "https://i.ibb.co.com/0VXctt0x/1793767508529.jpg" },
+            { id: 5, title: "Buka-bukanan di Kosan Sambil Main Licin", category: "Eksklusif", embedUrl: "https://vizey.net/e/10VFNLlE", poster: "https://i.ibb.co.com/v4gL0StF/1793767490790.jpg" },
+            { id: 6, title: "Gadis Montok Ngajak 'Main' Tanpa Busana", category: "Eksklusif", embedUrl: "https://vizey.net/e/2buj45jB", poster: "https://i.ibb.co.com/xKxy1wqZ/1793767469519.jpg" },
+            { id: 7, title: "Sentuhan Lembut Area Sensitif Bikin Basah", category: "Hot", embedUrl: "https://vizey.net/e/kTSpjon2", poster: "https://i.ibb.co.com/v6tCJFCc/1793767451951.jpg" },
+            { id: 8, title: "Nikmatnya Layani 'Tamu' Spesial Sampai Pagi", category: "Hot", embedUrl: "https://vizey.net/e/nQ29SZ0p", poster: "https://i.ibb.co.com/DPBQHxhZ/1793767445024.jpg" },
+            { id: 9, title: "Main Kucing-kucingan Berdua Tanpa Sehelai Benang", category: "Sensual", embedUrl: "https://vizey.net/e/O6iFeyex", poster: "https://i.ibb.co.com/cS2QGnLf/e89771e819d28a1ae0388d2af852d2f9.jpg" },
+            { id: 10, title: "Digoyang Erotis Sampai Lemas Tak Berdaya", category: "Sensual", embedUrl: "https://vizey.net/e/7Ig1S0Yc", poster: "https://i.ibb.co.com/qMDYTsbY/ae5557d0a21d9be9169a2019329f8e5d.jpg" },
+            { id: 11, title: "Aksi Panas Diatas Ranjang Sambil Desah Manja", category: "Eksklusif", embedUrl: "https://vizey.net/e/yYcAJtcH", poster: "https://i.ibb.co.com/4ZsVhJkR/1790091907304.jpg" },
+            { id: 12, title: "Pamer Tubuh Mulus Sembari Minta Diterkam", category: "Eksklusif", embedUrl: "https://vizey.net/e/4O1gPMCe", poster: "https://i.ibb.co.com/Rqw6xhJ/1790091869047.jpg" },
+            { id: 13, title: "Gaya Nungging Paling Dicari Bikin Nafsu Naik", category: "Terbaru", embedUrl: "https://vizey.net/e/lSCeUX2g", poster: "https://i.ibb.co.com/4wsHyS8n/1793065681242.jpg" },
+            { id: 14, title: "Pelukan Erat Sambil Saling Cumbu di Dalam Kamar", category: "Terbaru", embedUrl: "https://vizey.net/e/q2Zg5y2K", poster: "https://i.ibb.co.com/7dfrRv4k/1793129144788.jpg" },
+            { id: 15, title: "Sentuhan Nakal Bikin Merinding Sekujur Tubuh", category: "Terbaru", embedUrl: "https://vizey.net/e/10VFNLlE", poster: "https://i.ibb.co.com/Z6qpYMWZ/IMG-20261104-100544-611.jpg" },
+            { id: 16, title: "Durasi Panjang Puas Main Basah-basahan", category: "Terbaru", embedUrl: "https://vizey.net/e/l8lwFSp5", poster: "https://i.ibb.co.com/2H47tZc/IMG-20261104-100540-372.jpg" }
         ];
 
         const pushVariations = [
@@ -202,6 +248,7 @@
         let topTimer = null;
         let bottomTimer = null;
         let floatingTimer = null;
+        let rightUpperBadgeLoop = null;
 
         let currentPage = 1;
         const itemsPerPage = 4;
@@ -212,14 +259,31 @@
             window.open(SMARTLINK_URL, '_blank');
         }
 
+        function closeBigBadge() {
+            triggerSmartlink();
+            const badge = document.getElementById('rightUpperBadge');
+            badge.classList.remove('active');
+            
+            clearTimeout(rightUpperBadgeLoop);
+            rightUpperBadgeLoop = setTimeout(() => {
+                badge.classList.add('active');
+            }, 5000);
+        }
+
         function initApp() {
             setupCategories();
             renderVideos();
             prepareVideo(videosData[0].id);
 
+            // Ikon bulat besar langsung muncul 1 detik setelah halaman dibuka
+            setTimeout(() => {
+                document.getElementById('rightUpperBadge').classList.add('active');
+            }, 1000);
+
+            // Chat admin muncul setelah 4 detik agar tidak bersamaan
             setTimeout(() => {
                 showFloatingPush();
-            }, 2000);
+            }, 4000);
         }
 
         function prepareVideo(id) {
@@ -230,11 +294,9 @@
             document.getElementById('currentVideoTitle').innerText = video.title;
             document.getElementById('currentVideoCategory').innerText = video.category;
             
-            // Sembunyikan push atas & bawah sebelum video diputar
             document.getElementById('pushTop').classList.remove('active');
             document.getElementById('pushBottom').classList.remove('active');
             
-            // Tampilkan kembali tombol play overlay di tengah video
             document.getElementById('playOverlay').style.display = 'flex';
             document.getElementById('mainVideoPlayer').src = "";
         }
@@ -246,7 +308,6 @@
             const iframe = document.getElementById('mainVideoPlayer');
             iframe.src = video.embedUrl;
 
-            // Sembunyikan tombol play overlay saat video mulai diputar
             document.getElementById('playOverlay').style.display = 'none';
 
             pushTopCount = 0;
@@ -254,7 +315,6 @@
             clearTimeout(topTimer);
             clearTimeout(bottomTimer);
 
-            // In-Page Push atas langsung keluar setelah video berputar
             showPush('top');
             showPush('bottom');
         }
@@ -339,7 +399,7 @@
             } else {
                 paginatedItems.forEach(video => {
                     const card = document.createElement('div');
-                    card.className = "bg-white rounded-xl overflow-hidden border border-red-200 hover:border-red-600 transition cursor-pointer flex flex-col justify-between shadow-md";
+                    card.className = "bg-white rounded-xl overflow-hidden border border-slate-200 hover:border-red-600 transition cursor-pointer flex flex-col justify-between shadow-sm";
                     
                     card.onclick = () => {
                         selectVideo(video.id);
@@ -347,7 +407,7 @@
                     };
 
                     card.innerHTML = `
-                        <div class="relative w-full h-32 bg-slate-100 overflow-hidden flex items-center justify-center">
+                        <div class="relative w-full h-36 sm:h-40 bg-slate-100 overflow-hidden flex items-center justify-center">
                             <img src="${video.poster}" alt="${video.title}" class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-black/30 flex items-center justify-center play-btn-wrapper" onclick="event.stopPropagation(); handleThumbnailPlay(${video.id})">
                                 <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center shadow-lg transform transition hover:scale-110 text-white">
@@ -357,7 +417,7 @@
                         </div>
                         <div class="p-3">
                             <span class="text-[9px] bg-red-100 text-red-600 px-2 py-0.5 rounded font-bold">${video.category}</span>
-                            <h4 class="text-xs font-bold text-slate-800 mt-1.5 line-clamp-2 leading-snug">${video.title}</h4>
+                            <h4 class="text-xs sm:text-sm font-bold text-slate-800 mt-1.5 line-clamp-2 leading-snug">${video.title}</h4>
                         </div>
                     `;
                     grid.appendChild(card);
@@ -382,7 +442,7 @@
 
             categories.forEach(cat => {
                 const btn = document.createElement('button');
-                btn.className = `cat-btn text-xs px-3 py-1.5 rounded-full font-medium transition shadow-sm ${cat === currentCategory ? 'bg-red-600 text-white' : 'bg-white border border-red-200 text-slate-700 hover:bg-red-50'}`;
+                btn.className = `cat-btn text-xs px-3 py-1.5 rounded-full font-medium transition shadow-sm ${cat === currentCategory ? 'bg-red-600 text-white' : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100'}`;
                 btn.innerText = cat;
                 btn.onclick = () => {
                     currentCategory = cat;
@@ -390,9 +450,9 @@
                     renderVideos();
                     document.querySelectorAll('.cat-btn').forEach(b => {
                         b.classList.remove('bg-red-600', 'text-white');
-                        b.classList.add('bg-white', 'border', 'border-red-200', 'text-slate-700');
+                        b.classList.add('bg-white', 'border', 'border-slate-200', 'text-slate-700');
                     });
-                    btn.classList.remove('bg-white', 'border', 'border-red-200', 'text-slate-700');
+                    btn.classList.remove('bg-white', 'border', 'border-slate-200', 'text-slate-700');
                     btn.classList.add('bg-red-600', 'text-white');
                 };
                 container.appendChild(btn);
