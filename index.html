@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V.Stream - Video Eksklusif</title>
+    <title>V.Stream - Eksklusif</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
@@ -50,7 +50,7 @@
             <!-- WADAH PEMUTAR VIDEO -->
             <div id="playerContainer" class="relative bg-black rounded-2xl overflow-hidden shadow-2xl aspect-video flex items-center justify-center border-2 border-red-500/30">
                 
-                <!-- TOMBOL PLAY AWAL (AGAR PUSH MUNCUL SETELAH VIDEO DIPUTAR) -->
+                <!-- TOMBOL PLAY AWAL (PUSH ATAS MUNCUL SETELAH INI DIKLIK) -->
                 <div id="playOverlay" onclick="startVideoAndPush()" class="absolute inset-0 z-40 bg-black/50 flex flex-col items-center justify-center cursor-pointer transition hover:bg-black/40">
                     <div class="w-20 h-20 rounded-full bg-red-600 flex items-center justify-center shadow-2xl transform transition hover:scale-110 text-white text-2xl pl-1">
                         <i class="fa-solid fa-play"></i>
@@ -123,7 +123,7 @@
             <div class="flex justify-center items-center gap-3 mt-8">
                 <button id="prevPage" onclick="changePage(-1)" class="bg-white border border-red-200 text-slate-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">Sebelumnya</button>
                 <span id="pageInfo" class="text-sm font-medium text-slate-600">Hal 1 dari 4</span>
-                <button id="nextPage" onclick="changePage(1)" class="bg-white border border-red-200 text-slate-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed">Selanjutnya</button>
+                <button id="nextPage" onclick="changePage(1)" class="bg-white border border-red-200 text-slate-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">Selanjutnya</button>
             </div>
         </section>
 
@@ -162,22 +162,22 @@
         const SMARTLINK_URL = "https://www.profitableratecpmnetwork.com/i5gpw4k52u?key=fe139b5529deb5921915d705b9e976d2";
 
         const videosData = [
-            { id: 1, title: "Goyangan Hot Menggoda Bikin Lemes di Kamar", category: "Hot", embedUrl: "https://vidxxx.vip/e/54birgwl", poster: "https://i.ibb.co.com/3mr8M7v7/1793767600887.jpg" },
-            { id: 2, title: "Desahan Manja Pacar Cantik Pas Berduaan", category: "Hot", embedUrl: "https://vidxxx.vip/e/tydrszuv", poster: "https://i.ibb.co.com/9mBnCGtS/1793767589103.jpg" },
-            { id: 3, title: "Aksi Nakal Malam Jumat Bikin Ketagihan", category: "Sensual", embedUrl: "https://vidxxx.vip/e/c9lz5l4m", poster: "https://i.ibb.co.com/M52PQp5p/1793767574587.jpg" },
-            { id: 4, title: "Minta Jatah Duluan Gegara Suami Pulang Malam", category: "Sensual", embedUrl: "https://vidxxx.vip/e/ohoepzts", poster: "https://i.ibb.co.com/0VXctt0x/1793767508529.jpg" },
-            { id: 5, title: "Buka-bukanan di Kosan Sambil Main Licin", category: "Eksklusif", embedUrl: "https://vidxxx.vip/e/zmg0bdik", poster: "https://i.ibb.co.com/v4gL0StF/1793767490790.jpg" },
-            { id: 6, title: "Gadis Montok Ngajak 'Main' Tanpa Busana", category: "Eksklusif", embedUrl: "https://vidxxx.vip/e/insv054q", poster: "https://i.ibb.co.com/xKxy1wqZ/1793767469519.jpg" },
-            { id: 7, title: "Sentuhan Lembut Area Sensitif Bikin Basah", category: "Hot", embedUrl: "https://vidxxx.vip/e/xvqqx092", poster: "https://i.ibb.co.com/v6tCJFCc/1793767451951.jpg" },
-            { id: 8, title: "Nikmatnya Layani 'Tamu' Spesial Sampai Pagi", category: "Hot", embedUrl: "https://vidxxx.vip/e/ryjnrmnv", poster: "https://i.ibb.co.com/DPBQHxhZ/1793767445024.jpg" },
-            { id: 9, title: "Main Kucing-kucingan Berdua Tanpa Sehelai Benang", category: "Sensual", embedUrl: "https://vidxxx.vip/e/uk4u79mi", poster: "https://i.ibb.co.com/cS2QGnLf/e89771e819d28a1ae0388d2af852d2f9.jpg" },
-            { id: 10, title: "Digoyang Erotis Sampai Lemas Tak Berdaya", category: "Sensual", embedUrl: "https://vidxxx.vip/e/bwvkxy6f", poster: "https://i.ibb.co.com/qMDYTsbY/ae5557d0a21d9be9169a2019329f8e5d.jpg" },
-            { id: 11, title: "Aksi Panas Diatas Ranjang Sambil Desah Manja", category: "Eksklusif", embedUrl: "https://vidxxx.vip/e/ihd7oydc", poster: "https://i.ibb.co.com/4ZsVhJkR/1790091907304.jpg" },
-            { id: 12, title: "Pamer Tubuh Mulus Sembari Minta Diterkam", category: "Eksklusif", embedUrl: "https://vidxxx.vip/e/fbnxg0p4", poster: "https://i.ibb.co.com/Rqw6xhJ/1790091869047.jpg" },
-            { id: 13, title: "Gaya Nungging Paling Dicari Bikin Nafsu Naik", category: "Terbaru", embedUrl: "https://vidxxx.vip/e/jrvp2bi1", poster: "https://i.ibb.co.com/4wsHyS8n/1793065681242.jpg" },
-            { id: 14, title: "Pelukan Erat Sambil Saling Cumbu di Dalam Kamar", category: "Terbaru", embedUrl: "https://vidxxx.vip/e/eeuer648", poster: "https://i.ibb.co.com/7dfrRv4k/1793129144788.jpg" },
-            { id: 15, title: "Sentuhan Nakal Bikin Merinding Sekujur Tubuh", category: "Terbaru", embedUrl: "https://vidxxx.vip/e/cv4o2804", poster: "https://i.ibb.co.com/Z6qpYMWZ/IMG-20261104-100544-611.jpg" },
-            { id: 16, title: "Durasi Panjang Puas Main Basah-basahan", category: "Terbaru", embedUrl: "https://vidxxx.vip/e/gnrf4jt5", poster: "https://i.ibb.co.com/2H47tZc/IMG-20261104-100540-372.jpg" }
+            { id: 1, title: "Goyangan Hot Menggoda Bikin Lemes di Kamar", category: "Hot", embedUrl: "https://trbnvideo.live/e/jqUE2s1j", poster: "https://i.ibb.co.com/3mr8M7v7/1793767600887.jpg" },
+            { id: 2, title: "Desahan Manja Pacar Cantik Pas Berduaan", category: "Hot", embedUrl: "https://trbnvideo.live/e/rkB2lJU0", poster: "https://i.ibb.co.com/9mBnCGtS/1793767589103.jpg" },
+            { id: 3, title: "Aksi Nakal Malam Jumat Bikin Ketagihan", category: "Sensual", embedUrl: "https://trbnvideo.live/e/rF4FRrTZ", poster: "https://i.ibb.co.com/M52PQp5p/1793767574587.jpg" },
+            { id: 4, title: "Minta Jatah Duluan Gegara Suami Pulang Malam", category: "Sensual", embedUrl: "https://trbnvideo.live/e/CJqvagsK", poster: "https://i.ibb.co.com/0VXctt0x/1793767508529.jpg" },
+            { id: 5, title: "Buka-bukanan di Kosan Sambil Main Licin", category: "Eksklusif", embedUrl: "https://trbnvideo.live/e/10VFNLlE", poster: "https://i.ibb.co.com/v4gL0StF/1793767490790.jpg" },
+            { id: 6, title: "Gadis Montok Ngajak 'Main' Tanpa Busana", category: "Eksklusif", embedUrl: "https://trbnvideo.live/e/2buj45jB", poster: "https://i.ibb.co.com/xKxy1wqZ/1793767469519.jpg" },
+            { id: 7, title: "Sentuhan Lembut Area Sensitif Bikin Basah", category: "Hot", embedUrl: "https://trbnvideo.live/e/kTSpjon2", poster: "https://i.ibb.co.com/v6tCJFCc/1793767451951.jpg" },
+            { id: 8, title: "Nikmatnya Layani 'Tamu' Spesial Sampai Pagi", category: "Hot", embedUrl: "https://trbnvideo.live/e/nQ29SZ0p", poster: "https://i.ibb.co.com/DPBQHxhZ/1793767445024.jpg" },
+            { id: 9, title: "Main Kucing-kucingan Berdua Tanpa Sehelai Benang", category: "Sensual", embedUrl: "https://trbnvideo.live/e/O6iFeyex", poster: "https://i.ibb.co.com/cS2QGnLf/e89771e819d28a1ae0388d2af852d2f9.jpg" },
+            { id: 10, title: "Digoyang Erotis Sampai Lemas Tak Berdaya", category: "Sensual", embedUrl: "https://trbnvideo.live/e/7Ig1S0Yc", poster: "https://i.ibb.co.com/qMDYTsbY/ae5557d0a21d9be9169a2019329f8e5d.jpg" },
+            { id: 11, title: "Aksi Panas Diatas Ranjang Sambil Desah Manja", category: "Eksklusif", embedUrl: "https://trbnvideo.live/e/yYcAJtcH", poster: "https://i.ibb.co.com/4ZsVhJkR/1790091907304.jpg" },
+            { id: 12, title: "Pamer Tubuh Mulus Sembari Minta Diterkam", category: "Eksklusif", embedUrl: "https://trbnvideo.live/e/4O1gPMCe", poster: "https://i.ibb.co.com/Rqw6xhJ/1790091869047.jpg" },
+            { id: 13, title: "Gaya Nungging Paling Dicari Bikin Nafsu Naik", category: "Terbaru", embedUrl: "https://trbnvideo.live/e/lSCeUX2g", poster: "https://i.ibb.co.com/4wsHyS8n/1793065681242.jpg" },
+            { id: 14, title: "Pelukan Erat Sambil Saling Cumbu di Dalam Kamar", category: "Terbaru", embedUrl: "https://trbnvideo.live/e/q2Zg5y2K", poster: "https://i.ibb.co.com/7dfrRv4k/1793129144788.jpg" },
+            { id: 15, title: "Sentuhan Nakal Bikin Merinding Sekujur Tubuh", category: "Terbaru", embedUrl: "https://trbnvideo.live/e/10VFNLlE", poster: "https://i.ibb.co.com/Z6qpYMWZ/IMG-20261104-100544-611.jpg" },
+            { id: 16, title: "Durasi Panjang Puas Main Basah-basahan", category: "Terbaru", embedUrl: "https://trbnvideo.live/e/l8lwFSp5", poster: "https://i.ibb.co.com/2H47tZc/IMG-20261104-100540-372.jpg" }
         ];
 
         const pushVariations = [
@@ -222,7 +222,6 @@
             }, 2000);
         }
 
-        // Menyiapkan video tapi belum memutar (menampilkan tombol play overlay)
         function prepareVideo(id) {
             const video = videosData.find(v => v.id === id);
             if (!video) return;
@@ -231,44 +230,37 @@
             document.getElementById('currentVideoTitle').innerText = video.title;
             document.getElementById('currentVideoCategory').innerText = video.category;
             
-            // Sembunyikan push atas/bawah sebelum video diputar
+            // Sembunyikan push atas & bawah sebelum video diputar
             document.getElementById('pushTop').classList.remove('active');
             document.getElementById('pushBottom').classList.remove('active');
             
-            // Tampilkan kembali tombol play overlay
+            // Tampilkan kembali tombol play overlay di tengah video
             document.getElementById('playOverlay').style.display = 'flex';
-
-            // Kosongkan src iframe dulu agar tidak autoplay
             document.getElementById('mainVideoPlayer').src = "";
         }
 
-        // Fungsi saat tombol play di tengah diklik pengunjung
         function startVideoAndPush() {
             const video = videosData.find(v => v.id === currentActiveVideoId);
             if (!video) return;
 
-            // Masukkan link embed dan putar iframe
             const iframe = document.getElementById('mainVideoPlayer');
             iframe.src = video.embedUrl;
 
-            // Sembunyikan tombol play overlay
+            // Sembunyikan tombol play overlay saat video mulai diputar
             document.getElementById('playOverlay').style.display = 'none';
 
-            // Reset hitungan push
             pushTopCount = 0;
             pushBottomCount = 0;
             clearTimeout(topTimer);
             clearTimeout(bottomTimer);
 
-            // Munculkan kedua In-Page Push atas & bawah secara bersamaan setelah video berputar
+            // In-Page Push atas langsung keluar setelah video berputar
             showPush('top');
             showPush('bottom');
         }
 
-        // Fungsi untuk memilih video dari daftar bawah
         function selectVideo(id) {
             prepareVideo(id);
-            // Langsung jalankan video dan munculkan push
             startVideoAndPush();
         }
 
