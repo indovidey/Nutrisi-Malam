@@ -28,32 +28,15 @@
             50% { opacity: 0.35; }
         }
 
-        /* Animasi kedip khusus untuk ikon bulat besar */
-        .floating-badge-fixed {
+        /* Modal popup tengah dengan latar belakang gelap penutup layar (backdrop) */
+        .modal-overlay {
             transition: all 0.3s ease-in-out;
             opacity: 0;
             pointer-events: none;
-            transform: scale(0.8);
         }
-        .floating-badge-fixed.active {
+        .modal-overlay.active {
             opacity: 1;
             pointer-events: auto;
-            transform: scale(1);
-            animation: blinkEffect 3.5s infinite ease-in-out;
-        }
-
-        /* Penyesuaian responsif khusus untuk layar besar (Laptop/Monitor) */
-        @media (min-width: 768px) {
-            .responsive-badge {
-                width: 110px !important;
-                height: 110px !important;
-            }
-            .responsive-badge i {
-                font-size: 32px !important;
-            }
-            .responsive-badge span {
-                font-size: 13px !important;
-            }
         }
     </style>
 </head>
@@ -83,7 +66,7 @@
             <h2 id="currentVideoTitle" class="text-lg sm:text-2xl font-bold mb-3 text-slate-900 leading-snug">Memuat Video...</h2>
             
             <!-- WADAH PEMUTAR VIDEO -->
-            <div id="playerContainer" class="relative bg-black rounded-2xl overflow-hidden shadow-2xl aspect-video flex items-center justify-center border-2 border-red-500/30">
+            <div id="playerContainer" class="relative bg-black rounded-2xl overflow-hidden shadow-2xl w-full aspect-[16/9] flex items-center justify-center border-2 border-red-500/30">
                 
                 <!-- TOMBOL PLAY AWAL -->
                 <div id="playOverlay" onclick="startVideoAndPush()" class="absolute inset-0 z-40 bg-black/50 flex flex-col items-center justify-center cursor-pointer transition hover:bg-black/40">
@@ -110,21 +93,6 @@
 
                 <!-- IFRAME PLAYER -->
                 <iframe id="mainVideoPlayer" src="" class="w-full h-full border-0" frameborder="0" allowfullscreen></iframe>
-
-                <!-- IN-PAGE PUSH BAWAH -->
-                <div id="pushBottom" class="push-banner absolute bottom-3 left-3 right-3 z-30 bg-red-950/95 backdrop-blur-md border border-red-500/60 rounded-xl p-2.5 shadow-lg flex items-center justify-between gap-3">
-                    <div class="flex items-center gap-2.5 cursor-pointer flex-grow overflow-hidden" onclick="triggerSmartlink()">
-                        <div id="pushBottomIcon" class="w-8 h-8 rounded-lg bg-red-700 flex items-center justify-center text-base flex-shrink-0 text-white">💎</div>
-                        <div class="truncate">
-                            <h4 id="pushBottomTitle" class="text-[11px] sm:text-xs font-semibold text-red-200 truncate">Rekomendasi Terbaik</h4>
-                            <p id="pushBottomText" class="text-[11px] sm:text-xs font-bold text-white truncate">Gabung sekarang dan nikmati keuntungannya!</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-1.5 flex-shrink-0">
-                        <button onclick="triggerSmartlink()" class="bg-red-600 hover:bg-red-700 text-white text-[10px] sm:text-[11px] font-bold px-2.5 py-1 rounded-lg transition">Buka</button>
-                        <button onclick="closePush('bottom')" class="text-red-300 hover:text-white px-1"><i class="fa-solid fa-xmark text-base"></i></button>
-                    </div>
-                </div>
 
             </div>
 
@@ -164,38 +132,34 @@
 
     </main>
 
-    <!-- IKON BULAT BESAR (LANGSUNG MUNCUL DI AWAL & LOOPING TIAP 5 DETIK) -->
-    <div id="rightUpperBadge" class="floating-badge-fixed fixed bottom-32 sm:bottom-36 right-3 sm:right-6 z-50 flex flex-col items-center">
-        <button onclick="closeBigBadge()" class="absolute -top-3 -left-2 sm:-left-3 bg-slate-800 text-white hover:bg-red-600 w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 border-white shadow-md transition z-10">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-        <div onclick="triggerSmartlink()" class="responsive-badge cursor-pointer bg-red-600 border-4 border-white w-20 h-20 sm:w-24 sm:h-24 rounded-full flex flex-col items-center justify-center shadow-2xl text-white hover:scale-105 transition">
-            <i class="fa-solid fa-gift text-xl sm:text-2xl animate-bounce"></i>
-            <span class="text-[10px] sm:text-xs font-black uppercase tracking-wider leading-tight mt-1">KLAIM VIP</span>
-        </div>
-    </div>
+    <!-- MODAL POPUP CHAT ADMIN BERURUTAN (TOMBOL X JUGA MEMBUKA SMARTLINK) -->
+    <div id="centerModal" class="modal-overlay fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6 sm:p-8 relative flex flex-col gap-5 border border-slate-100">
+            <!-- Tombol Close (X) Membuka Smartlink -->
+            <button onclick="triggerSmartlink()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-red-100 text-slate-500 hover:text-red-600 flex items-center justify-center transition font-bold text-base z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
 
-    <!-- IN-PAGE PUSH BAWAH (CHAT ADMIN) -->
-    <div id="floatingPush" class="push-banner fixed bottom-3 right-3 sm:bottom-4 sm:right-4 z-50 w-72 sm:w-80 max-w-[calc(100vw-1.5rem)] bg-white/95 backdrop-blur-md border-2 border-red-600 rounded-2xl p-3 sm:p-4 shadow-2xl flex flex-col gap-3">
-        <div class="flex items-start justify-between gap-3">
-            <div class="flex items-center gap-3 cursor-pointer flex-grow" onclick="triggerSmartlink()">
+            <!-- Informasi Admin -->
+            <div class="flex items-center gap-4 cursor-pointer pr-8" onclick="triggerSmartlink()">
                 <div class="relative flex-shrink-0">
-                    <img src="https://i.ibb.co.com/LhY0hZpK/adb5c19a3fa43908058f009dd4ee995a.jpg" class="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-red-600 shadow-md">
-                    <span class="absolute bottom-0 right-0 w-3 h-3 sm:w-3.5 sm:h-3.5 bg-emerald-500 border-2 border-white rounded-full animate-pulse"></span>
+                    <img src="https://i.ibb.co.com/LhY0hZpK/adb5c19a3fa43908058f009dd4ee995a.jpg" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-red-600 shadow-md">
+                    <span class="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full animate-pulse"></span>
                 </div>
-                <div class="overflow-hidden">
+                <div>
                     <div class="flex items-center gap-2">
-                        <h4 id="floatingPushTitle" class="text-xs font-bold text-red-600">Admin Online</h4>
-                        <span class="text-[9px] bg-red-100 text-red-600 px-1.5 py-0.5 rounded font-bold">Online</span>
+                        <h4 id="adminModalTitle" class="text-base sm:text-lg font-bold text-red-600">Admin Online</h4>
+                        <span class="text-[11px] bg-red-100 text-red-600 px-2 py-0.5 rounded font-bold">Online</span>
                     </div>
-                    <p id="floatingPushText" class="text-xs sm:text-sm text-slate-800 font-medium mt-1 leading-snug">Mau dibantu pola gacor malam ini?</p>
+                    <p id="adminModalText" class="text-sm sm:text-base text-slate-800 font-medium mt-1.5 leading-snug">Halo Kak, mau dibantu pola gacor malam ini?</p>
                 </div>
             </div>
-            <button onclick="closeFloatingPush()" class="text-slate-400 hover:text-red-600 p-1 flex-shrink-0"><i class="fa-solid fa-xmark text-lg"></i></button>
+
+            <!-- Tombol Aksi Chat Berubah Sesuai Alur -->
+            <button id="adminModalBtn" onclick="triggerSmartlink()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg transition text-sm sm:text-base tracking-wide">
+                Mulai Chat Sekarang
+            </button>
         </div>
-        <button onclick="triggerSmartlink()" class="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 rounded-xl transition shadow-md">
-            Mulai Chat Sekarang
-        </button>
     </div>
 
     <!-- FOOTER -->
@@ -226,30 +190,37 @@
             { id: 16, title: "Durasi Panjang Puas Main Basah-basahan", category: "Terbaru", embedUrl: "https://trbnvideo.live/e/l8lwFSp5", poster: "https://i.ibb.co.com/2H47tZc/IMG-20261104-100540-372.jpg" }
         ];
 
-        const pushVariations = [
-            { icon: "🚀", title: "Flash Sale Eksklusif", text: "Akses penawaran spesial terbatas hari ini!" },
-            { icon: "💎", title: "Bonus Spesial Member", text: "Klik di sini untuk klaim hadiah harianmu." },
-            { icon: "🔥", title: "Trending Hari Ini", text: "Jangan lewatkan kesempatan emas ini, cek sekarang!" },
-            { icon: "🎁", title: "Kekejutan Hadiah", text: "Kamu terpilih mendapatkan akses VIP gratis!" },
-            { icon: "⭐", title: "Penawaran Terbatas", text: "Temukan kejutan menarik khusus untukmu." }
+        // Alur Percakapan Admin Judol Bersambung (Looping)
+        const chatConversation = [
+            {
+                title: "Admin Online",
+                text: "Halo Kak, mau dibantu pola gacor malam ini?",
+                btnText: "Mulai Chat Sekarang"
+            },
+            {
+                title: "CS Official",
+                text: "Boleh tahu modal awal Kakak berapa sekarang?",
+                btnText: "Kasih Tahu Modal"
+            },
+            {
+                title: "Admin Gacor",
+                text: "Oke Kak, ini saya kirimkan link RTP & pola maxwin khusus member baru ya.",
+                btnText: "Ambil Pola Sekarang"
+            },
+            {
+                title: "CS Official",
+                text: "Jangan lupa depo via QRIS/E-wallet ya Kak biar langsung masuk instan.",
+                btnText: "Konfirmasi Deposit"
+            }
         ];
 
-        const adminPushVariations = [
-            { title: "Admin Online", text: "Mau dibantu pola gacor malam ini?" },
-            { title: "CS Official", text: "Yuk klaim bonus maxwin sekarang" },
-            { title: "Admin Gacor", text: "Mau dibantu pola gacor malam ini?" },
-            { title: "CS Official", text: "Yuk klaim bonus maxwin sekarang" }
-        ];
-
-        let currentActiveVideoId = null;
+        let currentChatIndex = 0;
         let pushTopCount = 0;
-        let pushBottomCount = 0;
         const MAX_PUSH_PER_VIDEO = 5;
         let topTimer = null;
-        let bottomTimer = null;
-        let floatingTimer = null;
-        let rightUpperBadgeLoop = null;
+        let modalTimer = null;
 
+        let currentActiveVideoId = null;
         let currentPage = 1;
         const itemsPerPage = 4;
         let currentCategory = "Semua";
@@ -257,17 +228,31 @@
 
         function triggerSmartlink() {
             window.open(SMARTLINK_URL, '_blank');
+            closeModalPopup();
         }
 
-        function closeBigBadge() {
-            triggerSmartlink();
-            const badge = document.getElementById('rightUpperBadge');
-            badge.classList.remove('active');
+        // Fungsi tutup popup: buka smartlink, ganti ke teks chat berikutnya, lalu muncul lagi setelah 10 detik
+        function closeModalPopup() {
+            const modal = document.getElementById('centerModal');
+            modal.classList.remove('active');
             
-            clearTimeout(rightUpperBadgeLoop);
-            rightUpperBadgeLoop = setTimeout(() => {
-                badge.classList.add('active');
-            }, 5000);
+            // Geser ke chat berikutnya secara berurutan, kalau habis balik ke awal (looping)
+            currentChatIndex = (currentChatIndex + 1) % chatConversation.length;
+
+            clearTimeout(modalTimer);
+            modalTimer = setTimeout(() => {
+                showModalPopup();
+            }, 10000); // 10 detik
+        }
+
+        function showModalPopup() {
+            const currentChat = chatConversation[currentChatIndex];
+            document.getElementById('adminModalTitle').innerText = currentChat.title;
+            document.getElementById('adminModalText').innerText = currentChat.text;
+            document.getElementById('adminModalBtn').innerText = currentChat.btnText;
+
+            const modal = document.getElementById('centerModal');
+            modal.classList.add('active');
         }
 
         function initApp() {
@@ -275,15 +260,10 @@
             renderVideos();
             prepareVideo(videosData[0].id);
 
-            // Ikon bulat besar langsung muncul 1 detik setelah halaman dibuka
+            // Modal popup chat admin alur pertama muncul 1 detik setelah halaman dibuka
             setTimeout(() => {
-                document.getElementById('rightUpperBadge').classList.add('active');
+                showModalPopup();
             }, 1000);
-
-            // Chat admin muncul setelah 4 detik agar tidak bersamaan
-            setTimeout(() => {
-                showFloatingPush();
-            }, 4000);
         }
 
         function prepareVideo(id) {
@@ -295,7 +275,6 @@
             document.getElementById('currentVideoCategory').innerText = video.category;
             
             document.getElementById('pushTop').classList.remove('active');
-            document.getElementById('pushBottom').classList.remove('active');
             
             document.getElementById('playOverlay').style.display = 'flex';
             document.getElementById('mainVideoPlayer').src = "";
@@ -311,12 +290,9 @@
             document.getElementById('playOverlay').style.display = 'none';
 
             pushTopCount = 0;
-            pushBottomCount = 0;
             clearTimeout(topTimer);
-            clearTimeout(bottomTimer);
 
             showPush('top');
-            showPush('bottom');
         }
 
         function selectVideo(id) {
@@ -326,8 +302,11 @@
 
         function showPush(position) {
             if (position === 'top' && pushTopCount >= MAX_PUSH_PER_VIDEO) return;
-            if (position === 'bottom' && pushBottomCount >= MAX_PUSH_PER_VIDEO) return;
 
+            const pushVariations = [
+                { icon: "🚀", title: "Flash Sale Eksklusif", text: "Akses penawaran spesial terbatas hari ini!" },
+                { icon: "💎", title: "Bonus Spesial Member", text: "Klik di sini untuk klaim hadiah harianmu." }
+            ];
             const randomVar = pushVariations[Math.floor(Math.random() * pushVariations.length)];
             
             if (position === 'top') {
@@ -336,21 +315,7 @@
                 document.getElementById('pushTopTitle').innerText = randomVar.title;
                 document.getElementById('pushTopText').innerText = randomVar.text;
                 document.getElementById('pushTop').classList.add('active');
-            } else {
-                pushBottomCount++;
-                document.getElementById('pushBottomIcon').innerText = randomVar.icon;
-                document.getElementById('pushBottomTitle').innerText = randomVar.title;
-                document.getElementById('pushBottomText').innerText = randomVar.text;
-                document.getElementById('pushBottom').classList.add('active');
             }
-        }
-
-        function showFloatingPush() {
-            const randomVar = adminPushVariations[Math.floor(Math.random() * adminPushVariations.length)];
-            const el = document.getElementById('floatingPush');
-            el.querySelector('h4').innerText = randomVar.title;
-            el.querySelector('p').innerText = randomVar.text;
-            el.classList.add('active');
         }
 
         function closePush(position) {
@@ -361,21 +326,7 @@
                 if (pushTopCount < MAX_PUSH_PER_VIDEO) {
                     topTimer = setTimeout(() => showPush('top'), 5000);
                 }
-            } else {
-                document.getElementById('pushBottom').classList.remove('active');
-                if (pushBottomCount < MAX_PUSH_PER_VIDEO) {
-                    bottomTimer = setTimeout(() => showPush('bottom'), 5000);
-                }
             }
-        }
-
-        function closeFloatingPush() {
-            triggerSmartlink();
-            document.getElementById('floatingPush').classList.remove('active');
-            clearTimeout(floatingTimer);
-            floatingTimer = setTimeout(() => {
-                showFloatingPush();
-            }, 5000);
         }
 
         function renderVideos() {
