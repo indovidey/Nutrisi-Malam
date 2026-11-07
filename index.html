@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>V.Stream - Eksklusif</title>
+    <title>Videx Stream - Eksklusif</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
@@ -47,7 +47,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-2 cursor-pointer" onclick="location.reload()">
                 <i class="fa-solid fa-play-circle text-white text-2xl sm:text-3xl"></i>
-                <span class="font-bold text-lg sm:text-xl tracking-wide text-white">V.Stream</span>
+                <span class="font-bold text-lg sm:text-xl tracking-wide text-white">Videx Stream</span>
             </div>
             <!-- Pencarian -->
             <div class="w-48 sm:w-80 md:w-96 relative">
@@ -132,7 +132,7 @@
 
     </main>
 
-    <!-- MODAL POPUP CHAT ADMIN BERURUTAN (TOMBOL X JUGA MEMBUKA SMARTLINK) -->
+    <!-- MODAL POPUP CHAT ADMIN BERURUTAN (MENUNGGU 10 DETIK SEBELUM MUNCUL PERTAMA KALI) -->
     <div id="centerModal" class="modal-overlay fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6 sm:p-8 relative flex flex-col gap-5 border border-slate-100">
             <!-- Tombol Close (X) Membuka Smartlink -->
@@ -164,7 +164,7 @@
 
     <!-- FOOTER -->
     <footer class="bg-red-600 border-t border-red-700 py-4 text-center text-xs text-white">
-        &copy; 2026 V.Stream. Hak Cipta Dilindungi.
+        &copy; 2026 videx Stream. Hak Cipta Dilindungi.
     </footer>
 
     <!-- SKRIP UTAMA -->
@@ -231,7 +231,7 @@
             closeModalPopup();
         }
 
-        // Fungsi tutup popup: buka smartlink, ganti ke teks chat berikutnya, lalu muncul lagi setelah 10 detik
+        // Fungsi tutup popup: buka smartlink, ganti ke teks chat berikutnya, lalu tunggu 10 detik lagi baru muncul
         function closeModalPopup() {
             const modal = document.getElementById('centerModal');
             modal.classList.remove('active');
@@ -242,7 +242,7 @@
             clearTimeout(modalTimer);
             modalTimer = setTimeout(() => {
                 showModalPopup();
-            }, 10000); // 10 detik
+            }, 10000); // Jeda 10 detik sebelum muncul lagi
         }
 
         function showModalPopup() {
@@ -260,10 +260,10 @@
             renderVideos();
             prepareVideo(videosData[0].id);
 
-            // Modal popup chat admin alur pertama muncul 1 detik setelah halaman dibuka
-            setTimeout(() => {
+            // Jeda 10 detik pertama sebelum popup chat admin muncul saat pengunjung baru buka web
+            modalTimer = setTimeout(() => {
                 showModalPopup();
-            }, 1000);
+            }, 10000);
         }
 
         function prepareVideo(id) {
